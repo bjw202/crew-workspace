@@ -1,0 +1,6 @@
+date,line,chamber,change_type,description
+2026-07-10,1,CH-1A,recipe,에치 시간 42s→40s (생산성)
+2026-07-22,2,CH-2B,maintenance,RF 매칭 유닛 교체
+2026-07-28,3,CH-3B,maintenance,챔버 세정 주기 24h→72h 로 연장 (가동률)
+2026-08-05,3,CH-3A,recipe,가스 유량 미세 조정 +2%
+2026-08-14,1,CH-1B,maintenance,정기 PM

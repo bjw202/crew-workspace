@@ -1,0 +1,64 @@
+======================================================================
+[A] 행 수 / 컬럼
+  incoming   rows=  34 cols=['recv_date', 'part_no', 'serial', 'supplier', 'spec_item', 'spec_max', 'measured', 'unit', 'install_date', 'chamber']
+  equipment  rows=  48 cols=['date', 'chamber', 'event_type', 'detail', 'duration_min', 'worker']
+  yield      rows= 672 cols=['lot_id', 'date', 'line', 'chamber', 'yield_pct', 'defect_count', 'particle_defects']
+======================================================================
+[B] 날짜 형식 이상 (YYYY-MM-DD 가 아닌 값)
+  incoming.recv_date 행19: '2026/08/01'  ({'recv_date': '2026/08/01', 'part_no': 'SH-2200', 'serial': 'SH2200-A-1187', 'supplier': 'AlphaParts', 'spec_item': 'hole_dia_sd', 'spec_max': '3.0', 'measured': '2.1', 'unit': 'um', 'install_date': '2026-08-06', 'chamber': 'CH-2B'})
+  equipment.date 행35: '2026/08/03'  ({'date': '2026/08/03', 'chamber': 'CH-1A', 'event_type': 'ALARM', 'detail': '가스 유량 알람', 'duration_min': '10', 'worker': '이공정'})
+======================================================================
+[C] 완전 중복 행
+  incoming: 중복 2행
+    행8: ['2026-07-18', 'SH-2200', 'SH2200-B-0412', 'BSTech', 'hole_dia_sd', '3.0', '4.8', 'um', '2026-07-28', 'CH-3B']
+    행11: ['2026-07-18', 'SH-2200', 'SH2200-B-0412', 'BSTech', 'hole_dia_sd', '3.0', '4.8', 'um', '2026-07-28', 'CH-3B']
+  equipment: 없음
+  yield: 없음
+======================================================================
+[D] 키 중복 (incoming: serial 이 두 번 이상)
+  serial=SH2200-B-0412 가 2회
+    recv_date  part_no         serial supplier    spec_item spec_max measured unit install_date chamber
+6  2026-07-18  SH-2200  SH2200-B-0412   BSTech  hole_dia_sd      3.0      4.8   um   2026-07-28   CH-3B
+9  2026-07-18  SH-2200  SH2200-B-0412   BSTech  hole_dia_sd      3.0      4.8   um   2026-07-28   CH-3B
+======================================================================
+[E] 빈 칸 (필수로 보이는 컬럼)
+  incoming.supplier 행7 비어 있음 → ['2026-07-10', 'HC-40', 'HC40-A-0773', nan, 'resistance_dev', '5.0', '3.4', 'pct', nan, nan]
+  equipment.worker 행49 비어 있음 → ['2026-08-20', 'CH-3B', 'ALARM', '파티클 모니터 경고', '35', nan]
+======================================================================
+[F] 단위 불일치 (같은 spec_item 인데 unit 이 다름)
+  flatness         units=['um']
+  hardness_dev     units=['shoreA']
+  hole_dia_sd      units=['um', 'mm']  <== 섞임
+     recv_date  part_no         serial    supplier spec_max measured unit install_date chamber
+6   2026-07-18  SH-2200  SH2200-B-0412      BSTech      3.0      4.8   um   2026-07-28   CH-3B
+7   2026-07-18  SH-2200  SH2200-B-0413      BSTech      3.0      2.7   um          NaN     NaN
+8   2026-07-18  SH-2200  SH2200-B-0414      BSTech      3.0      2.9   um          NaN     NaN
+9   2026-07-18  SH-2200  SH2200-B-0412      BSTech      3.0      4.8   um   2026-07-28   CH-3B
+17  2026/08/01  SH-2200  SH2200-A-1187  AlphaParts      3.0      2.1   um   2026-08-06   CH-2B
+18  2026-08-01  SH-2200  SH2200-A-1188  AlphaParts      3.0   0.0023   mm          NaN     NaN
+19  2026-08-01  SH-2200  SH2200-A-1189  AlphaParts      3.0      2.5   um          NaN     NaN
+20  2026-08-01  SH-2200  SH2200-A-1190  AlphaParts      3.0   0.0031   mm          NaN     NaN
+29  2026-08-14  SH-2200  SH2200-B-0501      BSTech      3.0      2.6   um          NaN     NaN
+  leak_rate        units=['sccm']
+  resistance_dev   units=['pct']
+  temp_dev         units=['degC']
+======================================================================
+[G] equipment detail 표기 흔들림 (같은 부품 교체인데 문구가 다름)
+  행18 2026-07-15 CH-1A  '히터 코일(HC-40) 교체'
+  행28 2026-07-28 CH-3B  '샤워헤드(SH-2200) 교체'
+  행38 2026-08-06 CH-2B  'Showerhead SH-2200 교체'
+  행48 2026-08-18 CH-1B  'O-링 교체'
+======================================================================
+[H] yield 수치 이상 (범위 / 결측 / particle > defect)
+  yield_pct  결측=0  min=88.47  max=96.42
+  defect_count 결측=0
+  particle_defects > defect_count 인 행: 0
+  lot_id 중복: 0
+  기간: 2026-07-01 ~ 2026-08-25
+  챔버: ['CH-1A', 'CH-1B', 'CH-2A', 'CH-2B', 'CH-3A', 'CH-3B']
+  챔버×일자 로트 수 분포: {2: 336}
+======================================================================
+[I] 자료 기간 어긋남
+  yield     : 2026-07-01 ~ 2026-08-25
+  equipment : 2026-07-01 ~ 2026-08-20
+  incoming  : 2026-07-03 ~ 2026-08-21

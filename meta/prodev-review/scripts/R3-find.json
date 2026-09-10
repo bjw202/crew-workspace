@@ -1,0 +1,152 @@
+{
+  "name": "R3-find",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-비서",
+  "설명": "물음 20. R2 뒤 상태. 정답과 기대 층은 R3-key.md (meta 만). 한 글에 물음 하나, 봇 답을 기다린 뒤 다음.",
+  "steps": [
+    {
+      "id": "q01",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) CH-3B 에 7월 28일 장착된 샤워헤드 시리얼이 뭐지?"
+    },
+    {
+      "id": "q02",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 그 샤워헤드 홀 직경 편차 측정값이 얼마였어? 규격은?"
+    },
+    {
+      "id": "q03",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) HC40-A-0773 공급사가 어디로 정리됐나요?"
+    },
+    {
+      "id": "q04",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 성적서에서 규격 넘은 부품이 몇 개고 시리얼이 뭐예요?"
+    },
+    {
+      "id": "q05",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) mm 로 적혀 있던 행이 어느 시리얼이었지?"
+    },
+    {
+      "id": "q06",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 중복으로 정리한 행은 뭐였어?"
+    },
+    {
+      "id": "q07",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 성적서 카드의 기간이 언제부터 언제까지예요?"
+    },
+    {
+      "id": "q08",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) OR-15 규격 항목 이름이랑 상한이 뭐지?"
+    },
+    {
+      "id": "q09",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 샤워헤드 SH-2200 을 공급사별로 보면 규격 이내인 개체가 어느 것들이지?"
+    },
+    {
+      "id": "q10",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) CH-2B 에 들어간 샤워헤드는 규격 이내였나요?"
+    },
+    {
+      "id": "q11",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) BSTech 부품 가운데 규격 넘은 게 어떤 것들이야?"
+    },
+    {
+      "id": "q12",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 이 성적서에서 우리가 정리해 둔 이상 자리가 몇 군데였죠?"
+    },
+    {
+      "id": "q13",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 이 과제 예산이 얼마였죠?"
+    },
+    {
+      "id": "q14",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 중간 점검이 언제라고 했었죠?"
+    },
+    {
+      "id": "q15",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 김과제가 성적서 올릴 때 처음에 뭐라고 잘못 말했었지?"
+    },
+    {
+      "id": "q16",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 내가 판정 기준은 언제 정한다고 했지?"
+    },
+    {
+      "id": "q17",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) CH-4A 수율은 어땠어?"
+    },
+    {
+      "id": "q18",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 레이저 어닐링 조건 정리한 거 있나요?"
+    },
+    {
+      "id": "q19",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 이 과제 특허 출원 번호가 뭐지?"
+    },
+    {
+      "id": "q20",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 지난달 CH-3B 전력 사용량 자료 있어요?"
+    }
+  ]
+}

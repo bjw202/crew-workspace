@@ -1,0 +1,28 @@
+# 자기 저장소인 것들 (workspace.json 이 가리킨다)
+/prodev/
+/minidiscord/
+/crew/
+/knowledge/
+
+# 회사 자료 — 폴더는 저장소에 두고(.gitkeep) 안의 과제들은 올리지 않는다
+/projects/*
+!/projects/.gitkeep
+
+# 임시 worktree
+/*-wt-*/
+
+# 비밀 · 데이터 · 빌드
+.env
+*.tokens.env
+*.db
+*.db-wal
+*.db-shm
+node_modules/
+.DS_Store
+
+# 예외: meta 의 시험용 DB 둘은 검수 자료라 올린다 (훅 정답지용 · 대화 검색용 사본)
+!/meta/prodev-review/fixtures/hooks/fixture.db
+!/meta/prodev-review/fixtures/chat/minidiscord.db
+
+# meta 안의 큰 원자료 (사람이 준 것. 올릴지 따로 정한다)
+/meta/user-notes/

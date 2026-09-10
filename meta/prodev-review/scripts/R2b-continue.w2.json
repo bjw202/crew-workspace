@@ -1,0 +1,12 @@
+{
+  "name": "R2b-continue",
+  "project": "worktogether2",
+  "actors": { "PL": "김피엘", "member": "김과제" },
+  "bot": "prodev-worktogether2-비서",
+  "설명": "R2 가 확정(#19)에서 훅 결함(봉투 앞 확정 어휘)으로 멈춘 뒤, 훅을 고치고 확정 걸음부터 이어 돌리는 판 (2026-09-10). 채점은 R2.jsonl + 이 기록을 합쳐 본다.",
+  "steps": [
+    { "id": "s4a2", "room": "files", "author": "member", "wait": "bot", "timeout_s": 300, "text": "@TO(prodev-worktogether2-비서) 확정" },
+    { "id": "s5", "sleep_s": 60 },
+    { "id": "s6b", "room": "본방", "author": "PL", "wait": "bot", "timeout_s": 300, "text": "@TO(prodev-worktogether2-비서) 이제 카드 확정됐지? 카드 공지 글 번호 알려 줘." }
+  ]
+}

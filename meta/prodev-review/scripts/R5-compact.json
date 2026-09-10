@@ -1,0 +1,97 @@
+{
+  "name": "R5-compact",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-비서",
+  "설명": "압축·재기동. 두 번째 들이기(같은 성적서에 8월 행 셋을 더한 판 → .v2)를 문답 도중(남은 질문 1) 끊는다. 사람이 봇 세션에서 /compact → 과제원이 답 → 봇이 같은 방에서 남은 질문을 이어 물어야 한다 → 세션 끄기 → 글 5건(files 2 · 본방 3 — 리서치 방은 ADR-022 로 없어져 본방에서 묻는다) → 켜기 → 5건 전부 처리 · rooms.json 갱신 · handoff-compact 6칸 · '이어서 합니다' 한 줄. 첨부는 R2 와 같은 파일을 이름 그대로 다시 올린다 (.v2 가 생겨야 한다).",
+  "steps": [
+    {
+      "id": "s1",
+      "room": "files",
+      "author": "member",
+      "wait": "bot",
+      "timeout_s": 300,
+      "attach": [
+        "data/part_incoming_inspection.csv"
+      ],
+      "text": "@TO(prodev-worktogether-비서) 같은 성적서인데 구매팀이 다시 보낸 판이에요. 지난번 것 말고 이걸로 봐 주세요."
+    },
+    {
+      "id": "s2",
+      "room": "files",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 지난번이랑 같은 파일이면 그렇게 말해 주세요. 그리고 질문 있으면 하나만 남기고 물어보세요."
+    },
+    {
+      "id": "s3",
+      "manual": "봇 세션에서 /compact 를 친다. 압축이 끝나고 프롬프트가 돌아오면 Enter."
+    },
+    {
+      "id": "s4",
+      "room": "files",
+      "author": "member",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-비서) 네, 지난번과 같은 파일 맞아요. 남은 질문 있으면 이어서 물어보세요."
+    },
+    {
+      "id": "s5",
+      "manual": "봇 세션을 끈다 (Ctrl+C 두 번 또는 /exit). 완전히 내려가면 Enter."
+    },
+    {
+      "id": "s6",
+      "room": "files",
+      "author": "member",
+      "wait": "none",
+      "text": "@TO(prodev-worktogether-비서) 아까 남은 질문 답은 '단위는 전부 µm 로 통일' 이에요."
+    },
+    {
+      "id": "s7",
+      "room": "files",
+      "author": "PL",
+      "wait": "none",
+      "text": "@TO(prodev-worktogether-비서) 이 성적서 v2 는 카드 새로 내지 말고 앞 카드에 붙여 둬. 내용이 같으니까."
+    },
+    {
+      "id": "s8",
+      "room": "본방",
+      "author": "PL",
+      "wait": "none",
+      "text": "@TO(prodev-worktogether-비서) 켜지면 오늘 브리핑부터 해 줘."
+    },
+    {
+      "id": "s9",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "text": "@TO(prodev-worktogether-비서) 어제 정리된 카드가 몇 장이에요?"
+    },
+    {
+      "id": "s10",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "text": "@TO(prodev-worktogether-비서) 리서치 카드에 출처 링크가 다 붙어 있는지 확인해 주세요."
+    },
+    {
+      "id": "s11",
+      "manual": "봇 세션을 켠다 (docs/launch.md 의 기동 명령). 칩이 🟢 이 되면 Enter."
+    },
+    {
+      "id": "s12",
+      "sleep_s": 240
+    },
+    {
+      "id": "s13",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-비서) 다 따라잡았으면 오늘 정리해 둬."
+    }
+  ]
+}

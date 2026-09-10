@@ -1,0 +1,31 @@
+# ADR-023 코드 PR 시험 실측 — 2026-09-10T13:42:03Z · 브랜치 code/adr-023-setup-makes-project HEAD b3b38d7 · 사본 /var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.obCopraWhd/copy
+## npm test
+ℹ tests 94
+ℹ pass 94
+ℹ fail 0
+## npm run test:server
+✔ setup --project 이름만 — 파일 뿌리 아래에 과제 폴더 · git · 봇 폴더 셋이 생긴다 (ADR-023) (81.975125ms)
+✔ setup --project — 있는 폴더에 다시 돌려도 안의 것을 건드리지 않는다 (ADR-023) (123.803416ms)
+✔ setup --project 이름만 — 파일 뿌리를 모르면 까닭을 대고 죽는다 (ADR-023) (23.523375ms)
+✔ 시험은 실제 bots/ 를 만지지 않는다 (시험 전후 목록이 같다) (0.092ms)
+ℹ tests 23
+ℹ pass 23
+ℹ fail 0
+## 실제 bots/ (시험 뒤, 본 체크아웃)
+prodev-worktogether-비서
+prodev-worktogether2-비서
+## 실제 projects/ (시험 뒤)
+worktogether
+worktogether2
+## CLAUDE.md 줄
+      25
+## 에이전트 · 스킬 수
+       6
+      13
+## mkdir 흔적 (README · docs · ARCHITECTURE)
+       0
+## --project 안내 줄
+README.md:33:node scripts/setup.js --project <과제이름>   과제 폴더(없으면 만들고 git init) · 봇 폴더 · 설정
+docs/launch.md:70:  node scripts/setup.js --project <과제이름>
+docs/launch.md:76:`--project` 에는 **이름만** 주면 된다 (ADR-023). 그러면 `$MINIDISCORD_BOT_FILES_DIR/<이름>` 에 과제 폴더를 만들고 하위 열과 `git init` 까지 한다 — 폴더를 미리 만들 필요가 없다. 파일 뿌리 밖에 두고 싶으면 그때만 **경로**를 준다 (`/` 가 들어 있으면 경로로 본다). 있는 폴더에 다시 돌려도 안의 것은 건드리지 않는다.
+docs/launch.md:363:| 6 | `node scripts/setup.js --project <과제>` | `<루트>/projects/<과제>` 와 그 `.git` 이 생김 · 출력 ④ 에 "명령 N/N 풀림" · 못 찾은 명령 0 · `bots/<봇>/.mcp.json` 이 생김 |

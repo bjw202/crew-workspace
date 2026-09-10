@@ -1,0 +1,100 @@
+======================================================================
+[1] 행 수
+  yield_by_lot            672 행
+  equipment_history       48 행
+  part_incoming_inspection 34 행
+
+[2] 날짜 형식 이상 (YYYY-MM-DD 아닌 것)
+  equip L35 date = '2026/08/03'
+  part L19 recv_date = '2026/08/01'
+  → 이상 2 건
+
+[3] 완전 중복 행
+  yield: 0 쌍
+  equip: 0 쌍
+  part: 1 쌍
+    L[8, 11]  {'chamber': 'CH-3B', 'install_date': '2026-07-28', 'measured': '4.8', 'part_no': 'SH-2200', 'recv_date': '2026-07-18', 'serial': 'SH2200-B-0412'}
+
+[4] part: serial 중복 (같은 부품 번호가 두 번)
+  SH2200-B-0412 × 2
+
+[5] 결측 칸 (install_date/chamber 는 미설치 뜻이므로 제외 집계)
+  yield: 없음
+  equip: {'worker': 1}
+  part: {'supplier': 1}
+  part: install_date 와 chamber 짝 안 맞는 행:
+    → 0 건
+
+[6] part: 단위 뒤섞임 (같은 spec_item 안에서)
+  flatness        {'um': 5}
+  hardness_dev    {'shoreA': 5}
+  hole_dia_sd     {'um': 7, 'mm': 2}  ← 뒤섞임
+  leak_rate       {'sccm': 5}
+  resistance_dev  {'pct': 5}
+  temp_dev        {'degC': 5}
+
+[7] part: 규격 초과 판정 (단위 um 기준으로 mm 는 ×1000 환산)
+  serial           part_no   spec_item      unit     measured       환산    max 판정/설치
+  GV80-A-2201      GV-80     leak_rate      sccm          0.4   0.4000    1.0 OK 미설치
+  GV80-A-2202      GV-80     leak_rate      sccm          0.6   0.6000    1.0 OK 미설치
+  TC12-A-0908      TC-12     temp_dev       degC          1.1   1.1000    2.0 OK 미설치
+  HC40-A-0771      HC-40     resistance_dev pct           6.1   6.1000    5.0 NG 설치 2026-07-15 CH-1A
+  HC40-A-0772      HC-40     resistance_dev pct           2.9   2.9000    5.0 OK 미설치
+  HC40-A-0773      HC-40     resistance_dev pct           3.4   3.4000    5.0 OK 미설치
+  SH2200-B-0412    SH-2200   hole_dia_sd    um            4.8   4.8000    3.0 NG 설치 2026-07-28 CH-3B
+  SH2200-B-0413    SH-2200   hole_dia_sd    um            2.7   2.7000    3.0 OK 미설치
+  SH2200-B-0414    SH-2200   hole_dia_sd    um            2.9   2.9000    3.0 OK 미설치
+  SH2200-B-0412    SH-2200   hole_dia_sd    um            4.8   4.8000    3.0 NG 설치 2026-07-28 CH-3B
+  FR300-A-5510     FR-300    flatness       um            8.2   8.2000   15.0 OK 미설치
+  FR300-A-5511     FR-300    flatness       um            9.6   9.6000   15.0 OK 미설치
+  TC12-B-0311      TC-12     temp_dev       degC          0.9   0.9000    2.0 OK 미설치
+  TC12-B-0312      TC-12     temp_dev       degC          1.4   1.4000    2.0 OK 미설치
+  GV80-B-2740      GV-80     leak_rate      sccm          0.5   0.5000    1.0 OK 미설치
+  FR300-B-6002     FR-300    flatness       um           11.3  11.3000   15.0 OK 미설치
+  FR300-B-6003     FR-300    flatness       um           18.7  18.7000   15.0 NG 미설치
+  SH2200-A-1187    SH-2200   hole_dia_sd    um            2.1   2.1000    3.0 OK 설치 2026-08-06 CH-2B
+  SH2200-A-1188    SH-2200   hole_dia_sd    mm         0.0023   2.3000    3.0 OK 미설치
+  SH2200-A-1189    SH-2200   hole_dia_sd    um            2.5   2.5000    3.0 OK 미설치
+  SH2200-A-1190    SH-2200   hole_dia_sd    mm         0.0031   3.1000    3.0 NG 미설치
+  HC40-B-1150      HC-40     resistance_dev pct           4.2   4.2000    5.0 OK 미설치
+  HC40-B-1151      HC-40     resistance_dev pct           3.8   3.8000    5.0 OK 미설치
+  GV80-A-2380      GV-80     leak_rate      sccm          0.7   0.7000    1.0 OK 미설치
+  OR15-B-3301      OR-15     hardness_dev   shoreA        2.4   2.4000    3.0 OK 설치 2026-08-18 CH-1B
+  OR15-B-3302      OR-15     hardness_dev   shoreA        2.2   2.2000    3.0 OK 미설치
+  OR15-B-3303      OR-15     hardness_dev   shoreA        2.8   2.8000    3.0 OK 미설치
+  OR15-A-3102      OR-15     hardness_dev   shoreA        1.9   1.9000    3.0 OK 미설치
+  TC12-A-0955      TC-12     temp_dev       degC          1.6   1.6000    2.0 OK 미설치
+  SH2200-B-0501    SH-2200   hole_dia_sd    um            2.6   2.6000    3.0 OK 미설치
+  FR300-A-5680     FR-300    flatness       um            7.4   7.4000   15.0 OK 미설치
+  GV80-B-2801      GV-80     leak_rate      sccm          1.3   1.3000    1.0 NG 미설치
+  OR15-A-3210      OR-15     hardness_dev   shoreA        2.0   2.0000    3.0 OK 미설치
+  TC12-B-0402      TC-12     temp_dev       degC          1.2   1.2000    2.0 OK 미설치
+
+  규격 초과 6 건 (중복행 포함):
+    HC40-A-0771 HC-40 resistance_dev=6.1pct (max 5.0) — 설치 2026-07-15 → CH-1A
+    SH2200-B-0412 SH-2200 hole_dia_sd=4.8um (max 3.0) — 설치 2026-07-28 → CH-3B
+    SH2200-B-0412 SH-2200 hole_dia_sd=4.8um (max 3.0) — 설치 2026-07-28 → CH-3B
+    FR300-B-6003 FR-300 flatness=18.7um (max 15.0) — 미설치 (재고)
+    SH2200-A-1190 SH-2200 hole_dia_sd=0.0031mm (max 3.0) — 미설치 (재고)
+    GV80-B-2801 GV-80 leak_rate=1.3sccm (max 1.0) — 미설치 (재고)
+
+[8] equip: 같은 뜻 다른 표기 (detail 문자열)
+  'Showerhead SH-2200 교체' × 1
+  '샤워헤드(SH-2200) 교체' × 1
+
+[9] equip: 설비 이력 기간 vs 수율 기간
+  equip  2026-07-01 ~ 2026-08-20
+  yield  2026-07-01 ~ 2026-08-25
+  → 08-21~08-25 수율 구간에 대응하는 설비 이력이 없다 (이력 누락 가능)
+
+[10] part 교체 이력 ↔ 입고 검사 대조 (equip 의 PART 이벤트마다 성적서가 있나)
+  2026-07-15 CH-1A 히터 코일(HC-40) 교체              → 성적서 ['HC40-A-0771']
+  2026-07-28 CH-3B 샤워헤드(SH-2200) 교체             → 성적서 ['SH2200-B-0412', 'SH2200-B-0412']
+  2026-08-06 CH-2B Showerhead SH-2200 교체        → 성적서 ['SH2200-A-1187']
+  2026-08-18 CH-1B O-링 교체                       → 성적서 ['OR15-B-3301']
+
+  역방향: 성적서에 설치 기록이 있는데 equip 에 PART 이벤트가 없는 것
+    2026-07-15 CH-1A ['HC40-A-0771'] (짝 있음)
+    2026-07-28 CH-3B ['SH2200-B-0412', 'SH2200-B-0412'] (짝 있음)
+    2026-08-06 CH-2B ['SH2200-A-1187'] (짝 있음)
+    2026-08-18 CH-1B ['OR15-B-3301'] (짝 있음)

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev",
+      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/crew",
+      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/rooms",
+      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/knowledge",
+      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord"
+    ],
+    "deny": [
+      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
+      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
+      "NotebookEdit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
+      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/crew/**)",
+      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/crew/**)",
+      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord/**)",
+      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          { "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.js\"", "timeout": 10 }
+        ]
+      }
+    ]
+  }
+}

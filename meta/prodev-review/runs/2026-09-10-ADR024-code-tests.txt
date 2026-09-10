@@ -1,0 +1,25 @@
+# ADR-024 코드 PR 시험 실측 — 2026-09-10T14:02:04Z · 브랜치 code/adr-024-english-names HEAD 63b9c3d · 사본 /var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.GjUHJplE3g/copy
+## npm test
+ℹ tests 94
+ℹ pass 94
+ℹ fail 0
+## npm run test:server
+      cron 글 message_id=1 · author=prodev-notify
+✔ setup — .env 에 알림 계정 세션 쿠키가 들어가고 그 값이 실제로 먹힌다 (ADR-024) (2.537625ms)
+✔ setup — .env 에 알림 토큰이 이미 있으면 덮지 않는다 (ADR-024) (79.051542ms)
+✔ 시험은 실제 bots/ 를 만지지 않는다 (시험 전후 목록이 같다) (0.079333ms)
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+## 실제 bots/ (시험 뒤)
+prodev-worktogether-비서
+prodev-worktogether2-비서
+## 식별자 grep (기대: log.md 과거 절 1줄)
+docs/log.md:80:`ADR-019` 를 손으로 확인하려고 **실제 저장소에서** `setup.js` 를 돌렸다. `--project` 만 임시로 두면 격리된다고 여겼는데 봇 폴더는 저장소의 `bots/` 아
+## 새 이름
+109:const 봇이름 = 과제 => `prodev-${과제}-bot`;
+112:const 알림계정 = 'prodev-notify';
+## 분기표 · 스킬 description 이 이 PR 에서 바뀌었나 (기대: 없음)
+(빈 출력 = 안 바뀜)
+## CLAUDE.md 줄
+      25

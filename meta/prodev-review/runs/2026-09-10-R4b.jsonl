@@ -1,0 +1,3 @@
+{"id":"s7","t_sent":"2026-09-10T09:01:33.722Z","room_id":4,"message_id":81,"bot":{"message_id":82,"t":"2026-09-10 09:02:05","text":"시작했습니다. 고친 뒤 3차 검토를 걸고, 통과하면 말씀대로 리서치 카드로 굳히겠습니다. 통과 못 하면 굳히지 않고 막힌 자리만 알려 드리겠습니다.","attachments":0},"timeout":false,"branch":null}
+{"id":"s8","sleep_s":90,"t_sent":"2026-09-10T09:03:37.827Z"}
+{"summary":{"steps":2,"timeouts":0,"bot_msgs":1}}

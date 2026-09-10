@@ -1,0 +1,40 @@
+{
+  "name": "R1b-continue",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-비서",
+  "설명": "R1 의 s1 이 이미 보내진 뒤(2026-09-10 #3/#4) 이어 돌리는 판. s1 의 봇 답 #4 가 목표를 물었으므로 s1a 부터.",
+  "steps": [
+    {
+      "id": "s1a",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 목표는 9월 30일까지 CH-3B 주간 평균 수율 93.0% 이상 두 주 연속. 그게 목표야."
+    },
+    {
+      "id": "s2",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 판정 기준은 나중에 정할게. 지금은 비워 둬. 더 물을 게 없으면 헌장 초안 보여 줘."
+    },
+    {
+      "id": "s3",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 헌장 초안 그대로 결재한다. 방은 이미 있으니 그대로 써."
+    },
+    {
+      "id": "s4",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 저도 이 과제 들어왔습니다. 지금 뭐 해야 하죠?"
+    }
+  ]
+}

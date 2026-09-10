@@ -1,0 +1,15 @@
+{
+  "name": "R6-warm",
+  "project": "worktogether",
+  "actors": { "PL": "김피엘", "member": "김과제" },
+  "bot": "prodev-worktogether-비서",
+  "설명": "압축 직후 알림을 실제 압축으로 확인하기 위해 새 세션에 대화를 쌓는 짧은 대본 (2026-09-10). 채점하지 않는다. R3 의 물음 여섯을 그대로.",
+  "steps": [
+    { "id": "w1", "room": "본방", "author": "PL", "wait": "bot", "text": "@TO(prodev-worktogether-비서) CH-3B 에 7월 28일 장착된 샤워헤드 시리얼이 뭐지?" },
+    { "id": "w2", "room": "본방", "author": "member", "wait": "bot", "text": "@TO(prodev-worktogether-비서) 성적서에서 규격 넘은 부품이 몇 개고 시리얼이 뭐예요?" },
+    { "id": "w3", "room": "본방", "author": "PL", "wait": "bot", "text": "@TO(prodev-worktogether-비서) mm 로 적혀 있던 행이 어느 시리얼이었지?" },
+    { "id": "w4", "room": "본방", "author": "member", "wait": "bot", "text": "@TO(prodev-worktogether-비서) 이 과제 예산이 얼마였죠?" },
+    { "id": "w5", "room": "본방", "author": "PL", "wait": "bot", "text": "@TO(prodev-worktogether-비서) 중간 점검이 언제지? 밀린 거 있어?" },
+    { "id": "w6", "room": "본방", "author": "member", "wait": "bot", "text": "@TO(prodev-worktogether-비서) 위키에 지금 뭐가 적혀 있어요?" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "R4b-continue",
+  "project": "worktogether",
+  "actors": { "PL": "김피엘", "member": "김과제" },
+  "bot": "prodev-worktogether-비서",
+  "설명": "R4 브리핑(#80, 검토 불통과 2차)이 온 뒤 PL 이 한 번 더 고쳐 통과시키고 카드로 굳히라고 한다. 대본 R4 의 s6 은 조사 중에 먼저 가 버려 봇이 맞게 거절했으므로 여기서 다시 한다 (2026-09-10).",
+  "steps": [
+    { "id": "s7", "room": "리서치", "author": "PL", "wait": "bot", "timeout_s": 1500,
+      "text": "@TO(prodev-worktogether-비서) 한 번 더 고쳐서 검토 통과시켜. 통과되면 그 내용 리서치 카드로 굳혀 둬. 통과 못 하면 굳히지 말고 이유만 알려 줘." },
+    { "id": "s8", "sleep_s": 90 }
+  ]
+}

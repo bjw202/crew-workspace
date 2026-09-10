@@ -1,0 +1,12 @@
+{
+  "name": "R2c-continue",
+  "project": "worktogether2",
+  "actors": { "PL": "김피엘", "member": "김과제" },
+  "bot": "prodev-worktogether2-비서",
+  "설명": "R2 확정 뒤 봇이 위키 새 주제 이름을 사람에게 물었다(설계 5.2: 새 주제는 사람이 이름을 정한다). 대본이 그 물음을 예상하지 못해 더한 걸음. 과제원이 이름을 고르고 남은 물음(빈 29행)에 답한다. 위키 즉시 갱신(ADR-004)이 여기서 일어나야 한다.",
+  "steps": [
+    { "id": "s7", "room": "files", "author": "member", "wait": "bot", "timeout_s": 600,
+      "text": "@TO(prodev-worktogether2-비서) 위키 주제는 'SH-2200 샤워헤드' 로 하세요. 그리고 install_date·chamber 가 빈 29행은 미장착이에요. 재고로 들어온 것들입니다." },
+    { "id": "s8", "sleep_s": 30 }
+  ]
+}

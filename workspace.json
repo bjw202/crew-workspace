@@ -1,0 +1,8 @@
+{
+  "설명": "crew-workspace 가 가리키는 저장소들. 커밋은 meta 가 검수를 끝낼 때만 올린다 (README 'git 은 이렇게 한다').",
+  "repos": {
+    "prodev":      { "url": "https://github.com/bjw202/prodev.git",      "commit": "831dfbb", "검수": "2026-09-10 ADR-022(방 둘) · ADR-023(setup 이 과제 폴더를 만듦) · ADR-024(bot · notify 이름, 알림 토큰 자동) 통과. 기록 meta/prodev-review/runs/2026-09-10-ADR02{2,3,4}-*.md" },
+    "minidiscord": { "url": "https://github.com/bjw202/minidiscord.git", "commit": "c1ea5fd", "검수": "2026-09-10 3단계 관문 때 쓰던 판" },
+    "crew":        { "url": "https://github.com/bjw202/crew.git",        "commit": "8e328b9", "검수": "닫힌 실험. 읽기만" }
+  }
+}

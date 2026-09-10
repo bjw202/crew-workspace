@@ -1,0 +1,152 @@
+# T1.M 관문 실측 — 2026-09-10T05:41:10Z
+## git
+fb3692c T1.x VERIFICATION 2절 보충
+48aafa5 T1.6 setup.js
+22d1668 T1.5 훅 셋 (session-start · pre-compact · pre-reply)
+6f1d951 T1.4 peek.js · intake-copy.js · plot.py
+977bdbe T1.3 index.js · find.js
+9a198e8 ADR-016 찾기 층 순서 4↔5
+194fc56 T1.2 chat.js 손질
+652fa6e T1.1 저장소·부품 옮기기
+dirty=0
+HEAD=fb3692c
+
+## npm test (서버 없이)
+
+> prodev@0.1.0 test
+> node --test "test/*.test.js"
+
+✔ 명령 1/6 rooms — 방 하나 · 377건 · 마지막 #377 (57.239666ms)
+✔ 명령 2/6 search — 샤워헤드 --limit 4 는 4건, 전부 그 말을 담는다 (47.043834ms)
+✔ 명령 3/6 around — #300 앞뒤 2씩이면 자기까지 5건, 가운데가 #300 (24.334625ms)
+✔ 명령 4/6 since — 방 1 의 #370 다음은 371..377 일곱 건 (45.758209ms)
+✔ 명령 5/6 tail — 방 1 의 마지막 3건은 375·376·377 (22.564667ms)
+✔ 명령 6/6 show — #2 는 본문에 "출석체크" 가 있고 첨부 0 (49.677292ms)
+✔ 명령 곁 — --speaker 는 말한이 하나로 거른다 (76.754833ms)
+✔ AND 1/2 — 낱말 둘은 둘 다 든 글만. 순서를 바꿔도 같다 (105.969875ms)
+✔ AND 2/2 — 따옴표로 묶은 한 덩이는 떨어진 것을 안 센다 · 없는 낱말 하나면 전부 없다 (151.358417ms)
+✔ NFC — 자모가 갈라진(NFD) 질의도 NFC 로 저장된 본문을 찾는다 (98.832375ms)
+✔ count — 600자 글: 상한 안이라 "든다" (53.389708ms)
+✔ count — 901자 글: 900자 상한을 하나 넘긴다 (72.534333ms)
+✔ count — @TO(x) 는 봉투지 글이 아니다. 세지 않는다 (69.070041ms)
+✔ count — 맨 끝의 계측 줄은 세지 않는다 (넣고 세면 되돌이가 된다) (97.640875ms)
+✔ find [물음] "샤워헤드 교체 후 수율" → 1층 cards/E-0007.md (0.666208ms)
+✔ find [물음] "특별 세정 효과" → 1층 cards/E-0005.md (0.047917ms)
+✔ find [물음] "원인 판정" → 1층 cards/D-0001.md (0.034833ms)
+✔ find [물음] "BSTech O-링" → 2층 cards/E-0003.md (0.033ms)
+✔ find [물음] "규격을 1.22배" → 2층 cards/E-0002.md (0.049958ms)
+✔ find [물음] "1.16%p 출처" → 3층 wiki/yield-recovery.md (0.028708ms)
+✔ find [물음] "표면 거칠기 측정값" → 3층 wiki/showerhead.md (0.030458ms)
+✔ find [물음] "출석체크" → 5층 #2 (0.052583ms)
+✔ find [물음] "particle_defects" → 4층 inbox/20260825-yield-by-lot/files.md (0.050125ms)
+✔ find [물음] "샤워헤드초판" → 1층 cards/E-0007.md (0.075375ms)
+✔ find [조사] "샤워헤드교체는 수율이" → 1층 cards/E-0007.md (0.041708ms)
+✔ find [조사] "특별세정은 효과가" → 1층 cards/E-0005.md (0.029584ms)
+✔ find [조사] "원인판정의" → 1층 cards/D-0001.md (0.022375ms)
+✔ find [없는것] "레이저 어닐링" → 없음 (0.022375ms)
+✔ find — void 카드는 대체한 카드로 바뀌어 나오고, 폐기된 쪽은 결과에 없다 (0.064542ms)
+✔ find — find.log 에 물음마다 한 줄, 모두 14줄 (0.30925ms)
+✔ session-start — 없음: 파일이 하나도 없으면 칸마다 "없음"과 까닭을 말한다 (32.21ms)
+✔ session-start — 있음: 헌장 · 열린 실 전부 · 마지막 일지 날짜를 싣는다 (38.366625ms)
+✔ session-start — 잘림: 긴 파일은 앞부분만 싣고 "잘림"과 남은 줄 수를 말한다 (24.447667ms)
+✔ session-start — handoff-compact 만 있음: 인수인계서가 먼저 오고 나머지는 "없음" 이다 (27.839667ms)
+✔ session-start — 60줄 넘는 일지는 앞부분만 싣고 잘렸다고 말한다 (24.290459ms)
+✔ pre-compact — 여섯 칸을 채운 인수인계서를 쓴다 (exit 0) (23.228833ms)
+✔ pre-compact — claude 에 보내는 입력에 thinking 이 0건이다 (23.583375ms)
+✔ pre-compact — 보내는 입력의 tool_result 는 300자로 잘린다 (23.908375ms)
+✔ pre-compact — 요약이 실패해도 exit 0 이고, 빈 칸으로 채우지 않는다 (fail-open) (23.665292ms)
+✔ pre-compact — 기록을 못 읽어도 exit 0 이고, 못 썼다고 파일에 적는다 (24.814834ms)
+✔ pre-reply — chat_id 없음 → 막음(2) (22.593833ms)
+✔ pre-reply — 901자 → 막음(2) (44.257666ms)
+✔ pre-reply — 본방 600자 통과 → 통과(0) (44.870875ms)
+✔ pre-reply — 자료 방 정상 카드 E-0001 → 통과(0) (44.110042ms)
+✔ pre-reply — 자료 방 confirmed_at 이 봇 글 E-0002 → 막음(2) (44.806666ms)
+✔ pre-reply — 자료 방 confirmed_at 없음 E-0003 → 막음(2) (44.224541ms)
+✔ pre-reply — 자료 방 status draft E-0004 → 막음(2) (44.178375ms)
+✔ pre-reply — 자료 방 직전 봇 글에 카드 번호 없음 E-0005 → 막음(2) (41.876875ms)
+✔ pre-reply — 자료 방 확정 글이 본방 E-0006 → 막음(2) (44.024917ms)
+✔ pre-reply — 자료 방 확정 어휘 아님(네) E-0007 → 막음(2) (44.451208ms)
+✔ pre-reply — 자료 방 글에 카드 번호 없음 → 막음(2) (41.686208ms)
+✔ pre-reply — 보고 방 발송, 결재 #5 (PL) → 통과(0) (40.243542ms)
+✔ pre-reply — 보고 방 발송, 결재 #6 (과제원) → 막음(2) (40.161125ms)
+✔ pre-reply — DB 를 못 열면 자료 방만 막고 나머지 방은 통과한다 (ADR-008) (82.460667ms)
+✔ pre-reply — 방을 아예 모르면(DB 도 rooms.json 도 없다) 막지 않는다 (40.371209ms)
+✔ index — 표 행 수가 11 이다 (카드 12 중 깨진 하나를 뺀다) (0.673916ms)
+✔ index — errors 는 1건이고 그것은 머리말이 안 닫힌 E-0010 이다 (0.089791ms)
+✔ index — errors 가 있으면 exit 1 이다 (그래도 index.md·index.json 은 쓴다) (0.071625ms)
+✔ index — next E 는 E-0011 이다 (깨진 E-0010 도 이름은 센다) (0.055708ms)
+✔ index — 머리말 파서: 스칼라 · 리스트 · {k: v} 셋만 읽는다 (0.317209ms)
+✔ index — void 카드와 supersedes 를 그대로 싣는다 (find.js 가 따라갈 자리다) (0.050375ms)
+✔ index — 위키 2 · inbox 사이드카를 싣는다 (0.061667ms)
+✔ index — 파서가 안 읽는 YAML 은 조용히 삼키지 않고 알린다 (0.329416ms)
+✔ intake — 같은 이름을 두 번 들이면 .v2 가 되고 앞 판이 그대로 남는다 (121.173584ms)
+✔ intake — files.md 에 SHA-256 줄이 둘이고 두 파일 이름을 다 적는다 (95.031625ms)
+✔ intake — 사이드카가 fixture 와 같은 꼴이다 (열 표 · 뜻·단위는 비워 둔다) (49.364875ms)
+✔ intake — 허용 뿌리 밖의 파일은 거절한다 (첨부로 온 것만 들인다) (47.139584ms)
+✔ intake — 뿌리를 안 정하면 막지 않는다 (혼자 손으로 돌릴 때) (46.867292ms)
+✔ intake — 들인 원본은 잠긴다 (0층 불변) (44.814875ms)
+✔ peek csv — 형식 · 120행 · 열 7 · 앞 5행 (72.549ms)
+✔ peek xlsx — 시트 둘 · 첫 시트 60행 · 열 7 · 앞 5행 (366.7875ms)
+✔ peek pdf — 쪽 수를 낸다 (글은 있는 도구로, 없으면 쪽 수만) (131.894125ms)
+✔ peek jpg — 320 × 240 (41.538416ms)
+✔ peek — 모르는 형식과 없는 파일에 죽지 않는다 (한 줄 내고 exit 0) (62.072166ms)
+✔ plot — tmp/ 에 png 하나를 만든다 (크기 > 0) (470.73775ms)
+✔ plot — 없는 열·없는 파일에 죽지 않는다 (한 줄 내고 exit 0) (54.708333ms)
+✔ 부품이 제자리에 있다 (0.477458ms)
+✔ fixture 가 제자리에 있다 (0.127458ms)
+ℹ tests 78
+ℹ suites 0
+ℹ pass 78
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 990.582917
+
+## npm run test:server (임시 서버)
+
+> prodev@0.1.0 test:server
+> node --test "test/server/*.test.js"
+
+  임시 서버: http://127.0.0.1:63577 · DB 폴더 /var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/prodev-md-data-9yZuDm
+  서버 떴다 (포트 63577)
+✔ setup rooms — GET /api/rooms 에 방이 일곱이다 (752.477792ms)
+✔ setup rooms — 일곱 방 전부에 봇이 참여했다 (4.145416ms)
+(node:48740) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ setup rooms — 다시 돌려도 방이 늘지 않는다 (있으면 그대로 쓴다) (58.90225ms)
+✔ setup — bots/<이름>/rooms.json 에 방 일곱이 id·name 으로 있다 (0.885125ms)
+✔ setup — bots/<이름>/.claude/settings.json 에 훅 셋과 env 셋이 있다 (0.176584ms)
+✔ setup cron — crontab 두 줄을 stdout 으로만 낸다 (19.380875ms)
+✔ setup archive — 방 하나를 보관하면 active 에서 빠지고 archived 로 간다 (57.071458ms)
+  서버 내렸다 (포트 63577)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1044.464917
+
+## 시험 파일별 test() 수
+10  test/chat.test.js
+4  test/count.test.js
+3  test/find.test.js
+13  test/hooks.test.js
+8  test/index.test.js
+6  test/intake.test.js
+5  test/peek.test.js
+2  test/plot.test.js
+2  test/smoke.test.js
+7  test/server/setup.test.js
+
+## fixture 대조
+meta 원본과 동일
+
+## 예측 파일이 이 단계 전에 있었나
+Sep 10 13:53:46 2026 /Users/byunjungwon/Dev/my-project-04/crew-workspace/meta/prodev-review/predictions/prodev-prediction.md
+
+## 하네스 산출물이 없어야 한다 (1단계 관문 전 하네스 금지)
+ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/agents: No such file or directory
+ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/skills: No such file or directory

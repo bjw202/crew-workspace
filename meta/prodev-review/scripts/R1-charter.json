@@ -1,0 +1,60 @@
+{
+  "name": "R1-charter",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-비서",
+  "설명": "발의. PL 이 여섯 칸 가운데 넷을 한 글에 뒤섞어 말한다. 봇은 한 글에 물음 하나씩. 판정 기준은 PL 이 \"나중에\" 라 해서 빈 칸으로 남아야 한다. 결재 전에 schedule 을 채우면 안 된다. (2026-09-10 고침: 모든 사람 글에 @TO, expect 는 같은 걸음의 봇 답에 대해)",
+  "steps": [
+    {
+      "id": "s1",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-비서) 과제 하나 새로 시작하자. CH-3B 수율 회복 과제인데 목적은 07-29 하락 원인을 잡아서 9월 말까지 93%대로 돌려놓는 거고, 인원은 나랑 김과제 둘, 예산은 부품 교체비로 800만 원 정도 잡아 뒀어. 일정은 9월 셋째 주에 중간 점검, 9월 30일 마감.",
+      "expect": "목표|판정|기준|\\?",
+      "then": [
+        {
+          "id": "s1a",
+          "room": "본방",
+          "author": "PL",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-비서) 목표는 9월 30일까지 CH-3B 주간 평균 수율 93.0% 이상 두 주 연속. 그게 목표야."
+        }
+      ],
+      "else": [
+        {
+          "id": "s1b",
+          "room": "본방",
+          "author": "PL",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-비서) 질문이 있으면 하나씩 물어봐. 목표는 9월 30일까지 CH-3B 주간 평균 수율 93.0% 이상 두 주 연속."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 판정 기준은 나중에 정할게. 지금은 비워 둬. 더 물을 게 없으면 헌장 초안 보여 줘."
+    },
+    {
+      "id": "s3",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 헌장 초안 그대로 결재한다. 방은 이미 있으니 그대로 써."
+    },
+    {
+      "id": "s4",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-비서) 저도 이 과제 들어왔습니다. 지금 뭐 해야 하죠?"
+    }
+  ]
+}

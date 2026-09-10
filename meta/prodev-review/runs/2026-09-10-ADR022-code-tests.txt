@@ -1,0 +1,21 @@
+# ADR-022 코드 PR 시험 실측 — 2026-09-10T13:04:22Z · 브랜치 code/adr-022-two-rooms HEAD 1c449c0 · 사본 /var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.RVdBS5bwJr/copy
+## npm test
+ℹ tests 94
+ℹ pass 94
+ℹ fail 0
+## npm run test:server
+✔ 시험은 실제 bots/ 를 만지지 않는다 (시험 전후 목록이 같다) (0.109041ms)
+ℹ tests 20
+ℹ pass 20
+ℹ fail 0
+## 실제 bots/ (시험 뒤, 본 체크아웃)
+prodev-worktogether-비서
+## 금칙 grep (스킬·CLAUDE.md 가 세지 않는가)
+       0
+## CLAUDE.md 줄
+      25
+## 옛 방 이름 grep (scripts common .claude CLAUDE.md test)
+       0
+## setup 갈래 · replay 갈래
+58:const 갈래들 = ['files'];
+33:const 갈래 = ['본방', 'files'];   // 과제 하나 = 방 둘 (ADR-022). 대본의 room 은 이 둘 중 하나다.
