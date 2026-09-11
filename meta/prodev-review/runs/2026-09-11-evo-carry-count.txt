@@ -1,0 +1,26 @@
+# evo-carry 계측 — 2026-09-11T13:18:58Z · prodev HEAD 7793abc (PR #11 docs/evo-carry) · IN-PROGRESS 13:18Z
+## C1 evidence (evo-count.js evidence)
+docs/evidence/: 2026-09-10-T1M.md 2026-09-10-T2M-2.md 2026-09-10-T2M.md 2026-09-10-T3M.md 2026-09-11-evo-path.md 2026-09-11-evo-seat.md 2026-09-11-search-2.md 2026-09-11-search.md README.md  (9개 파일)
+C1 2026-09-10-T1M	○ 같음	b66046e9dc6b
+C1 2026-09-10-T2M	○ 같음	45c862d5ce31
+C1 2026-09-10-T2M-2	○ 같음	d465d2a7c0c4
+C1 2026-09-10-T3M	○ 같음	efafce50de87
+C1 2026-09-11-search	○ 같음	c2db890a5a63
+C1 2026-09-11-search-2	○ 같음	685a9a0807b4
+C1 2026-09-11-evo-seat	○ 같음	c7886f5a8b15
+C1 2026-09-11-evo-path	○ 같음	85d0bebe8706
+C1 합	8/8 · 불일치 0
+## C2 docs/evidence/ 언급 (grep -c)
+design/v3/ADR.md 2 (ADR-030 :222 · ADR-031 :245) · docs/log.md 7 · README.md 1 → 10
+## 손대지 않은 것 — git diff --stat 7742095..HEAD -- design/v2 design/v1 .claude scripts common test → 0줄
+## C3 기억 md (notes/2026-09-11-memory.md)
+`name:` 슬러그 5 (기억 폴더 파일 6 = 슬러그 5 + 색인 MEMORY.md) · [고침] 표시 4 (낡은 두 곳 + 허용 목록 + 제목)
+## C4 *.md 의 /Users/byunjungwon (node_modules 제외)
+grep 원값 2 — 둘 다 검수 문서 자신(scoring-evo-carry.md:21 · predictions/2026-09-11-evo-carry.md:22)이 "이 문자열을 센다"고 적은 줄. 안내문(README.md:27 · crew-eval/README-crew-era.md 셋) → 0
+## C5 HANDOFF.md
+MINIDISCORD_DB 1 · 과제 저장소 2 · 첫날 결정 1 · bypassPermissions 1
+## C6 WINDOWS.md
+`## 3-C. 길 C` 1 · 첫날 점검표 행 11
+## 시험 (evo-carry-tests.txt) — 코드 무변경
+npm test 133 · 0 / test:server 25 · 0 / 금칙 0 / CLAUDE.md 27줄
+## PR #11 파일 12 — README 1줄 · ADR.md 4줄 · evidence 9 · log.md 26줄

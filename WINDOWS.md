@@ -33,7 +33,7 @@
 | 자리 | 무엇이 셸을 쓰나 | 어디서 확인했나 |
 |---|---|---|
 | 저장소 받기 | `bootstrap.sh` | 이 저장소 뿌리 |
-| **봇의 손** | 봇에게 허용된 명령 31건 가운데 24건이 유닉스 도구다 — `grep` · `sed` · `awk` · `find` · `sort` · `uniq` · `wc` · `head` · `tail` · `cat` · `cp` · `diff` · `stat` · `file` · `shasum` · `tr` · `cut` · `basename` … | `prodev/common/settings.template.json` |
+| **봇의 손** | 봇에게 허용된 Bash 명령은 **열 건**(node · git · gh · python3 · mkdir · ls · date · echo · pwd · cd)이다. 2026-09-11 관문 A(ADR-033)에서 `grep` · `sed` · `find` 같은 유닉스 도구 스물하나를 뺐다 — `Grep` · `Glob` · `Read` 내장 도구가 덮는다. 그래도 `node` · `git` 은 셸로 부른다 | `prodev/common/settings.template.json` |
 | 봇 상태줄 | `common/statusline.sh` (첫 줄 `#!/bin/bash`) | `prodev/common/statusline.sh` |
 | meta 의 검수 도구 | `gate-tests.sh` · `replay.sh` · `weekly.sh` (전부 zsh) | `meta/prodev-review/scripts/tools/` |
 | 서버 켜는 명령 | `VAR=값 명령` 꼴 (PowerShell 문법이 아니다) | `README.md` '봇을 돌리는 법' |
@@ -128,6 +128,47 @@ sh bootstrap.sh
 
 ---
 
+## 3-C. 길 C — PowerShell + Git Bash (회사 PC 가 이 경우다 · 2026-09-11 실측)
+
+길 A 도 길 B 도 "셸 창을 연다"를 전제했다. 회사 PC 는 **PowerShell 이 기본이고 Git for Windows 가 이미 깔려 있다.**
+2026-09-11 에 사람이 그 기계의 Claude Code 세션에서 직접 쳐 본 결과라 **추측이 아니라 실측이다**
+(`meta/prodev-review/plans/2026-09-11-handoff-evolution.md` 6.0).
+
+| 무엇 | 결과 | 그래서 |
+|---|---|---|
+| Git Bash | **있다. Claude Code 안에서 Bash 도구가 돈다** | 봇 허용 목록이 그대로 맞는다. 셸 창을 따로 열 필요가 없다 |
+| 경로 꼴 | `/d/claude-workspace/…` | 맥과 같은 슬래시 표기 |
+| `node` | v24.14.0 | `node:sqlite`(22 이상) 문제없다 |
+| `claude -p` 를 node 가 띄우나 | 성공 | 압축 인수인계서(`pre-compact.js`)가 돈다 |
+| `zsh` | **없다** | meta 도구 셋(`gate-tests.sh` · `replay.sh` · `weekly.sh`)이 안 돈다. `evo-count.js` 는 node 라 돈다 |
+| `crontab` · `schtasks` | 없다 / bash 에서 못 부른다 | **상관없다** — 자동 브리핑을 두지 않기로 했다(계획 문서 9절) |
+| `python` | 3.14.3 | **`python3` 라는 이름으로도 불리는지 미확인.** 코드는 `python3` 를 부른다(3.2 상자) |
+| 파이썬 꾸러미 | 미확인 | `openpyxl` · `matplotlib`(봇용) · `pandas` · `scipy` · `statsmodels`(분석용) — **사람이 미리 깐다**(`prodev/docs/launch.md` 10.4) |
+
+**PowerShell 에서 할 것은 둘뿐이다** — Claude Code 설치(`irm https://claude.ai/install.ps1 | iex`)와 `claude` 를 띄우는 것. 그 뒤로는 Claude Code 의 Bash 도구가 Git Bash 를 쓴다.
+봇 설정에는 `setup.js` 가 `CLAUDE_CODE_GIT_BASH_PATH` 를 박아 두므로(ADR-033) 3.4 를 손으로 할 일이 줄었다 — 다만 Git 이 다른 자리에 깔렸으면 같은 이름의 환경변수로 덮는다.
+
+### 길 C 첫날 점검표
+
+순서대로. 막히면 거기서 멈추고 **무엇이 어떻게 막혔는지** `meta/prodev-review/runs/` 에 한 줄 적는다. 고치는 것은 그다음이다.
+1주차는 **계측 교정 주**로 친다 — 도구가 그 기계에서 처음 돈다(계획 문서 10.2).
+
+| # | 무엇 | 어떻게 확인하나 | 막히면 무엇이 안 되나 |
+|---|---|---|---|
+| 1 | `python3 -V` 가 Git Bash 안에서 된다 | Claude Code 의 Bash 도구로 `python3 -V` | `peek.js` 의 xlsx 와 `plot.py` 그림, 분석 `run.py` 전부 |
+| 2 | 분석 꾸러미 다섯 | `python3 -c "import openpyxl, matplotlib, pandas, scipy, statsmodels"` | xlsx · 그림 · 분석(`analysis` 스킬)이 각각 빠진다. 설치는 `py -m pip install …` |
+| 3 | `setup.js --project <과제>` 가 자리 넷을 만든다 | `ls projects/<과제>` 에 `analysis/` · `templates/` · `house.md` · `.gitignore` | 진화 장치가 꽂힐 자리가 없다 |
+| 4 | 봇 설정의 PATH 와 Git Bash | `bots/<봇>/.claude/settings.json` 의 `env.PATH` 에 `Git\usr\bin`, `env.CLAUDE_CODE_GIT_BASH_PATH` 가 실제 `bash.exe` 자리 | 봇의 `node scripts/*.js` 가 승인 창을 만난다 |
+| 5 | 봇 권한 패턴 | 봇을 띄워 과제 폴더에 파일 하나를 쓰게 한다 — 승인 창 없이 되는가 | 5.2 첫 줄. 첫날 가장 먼저 밟을 자리 |
+| 6 | 봇이 사진을 보나 | 과제 폴더의 그림 하나를 읽혀 무엇이 보이는지 묻는다 | 이미지 계측(`analysis` 스킬 "사람 눈으로만 확인되는 것")이 못 돈다 |
+| 7 | 채널 플러그인 빌드 | `minidiscord` 에서 `npm install` · `npm run build -w channel` → `channel/dist/index.js` | 봇이 방에 못 붙는다 |
+| 8 | 서버 첨부 경로 | 방에 파일을 올리고 봇이 카드에 첨부하는 데까지 | `MINIDISCORD_BOT_FILES_DIR` 안팎 판정이 역슬래시에서 다를 수 있다 |
+| 9 | 한글 폴더 이름 · 경로 길이 | `setup.js --project 수율개선` · 작업판을 `C:\Users\<이름>\` 바로 아래에 | 260자 제한 · 코드페이지 |
+| 10 | `house.md` 상한 | 51줄로 만들어 봇을 켠 첫 답에 "50줄을 넘어 안 실렸다"가 나오는가 | 규칙 폭주를 막는 자리(ADR-032) |
+| 11 | meta 도구 | `node meta/prodev-review/scripts/tools/evo-count.js` 가 돈다 (zsh 셋은 안 돈다 — 옮길 후보) | 주간 계측(`weekly.sh`)을 손으로 대신한다 |
+
+---
+
 ## 4. 깔고 나서 한 번 치는 점검
 
 Git Bash 또는 Ubuntu 창에서 `crew-workspace` 안에 들어가 아래를 통째로 붙인다.
@@ -161,7 +202,7 @@ claude --version >/dev/null 2>&1 && echo "OK   claude" || echo "없음 claude  <
 | 2 | **setup 의 환경 점검이 윈도우에서 헐겁다** | `setup.js` 는 맥·리눅스에서는 명령 열넷(`grep` · `sed` · `python3` …)이 있는지 보는데, 윈도우에서는 `git.exe` · `node.exe` **둘만** 본다. 그래서 `grep` 이 없어도 "명령 2개 모두 풀림" 이라고 초록으로 지나간다 | **4절의 점검을 사람이 대신 친다.** setup 의 ④ 줄만 믿지 않는다 |
 | 3 | **봇 PATH 에 유닉스 도구 자리가 안 들어간다** | `setup.js` 가 봇 설정에 박아 넣는 기본 폴더가 윈도우에서는 `System32` 와 `Windows` 둘뿐이다. `grep` 이 사는 `C:\Program Files\Git\usr\bin` 은 그 목록에 없다 | **setup 을 반드시 Git Bash 창에서 돌린다.** 그러면 그 창의 PATH 를 setup 이 그대로 물려받는다. 돌린 뒤 `bots/<봇>/.claude/settings.json` 의 `env.PATH` 에 `Git\usr\bin` 이 들어 있는지 눈으로 본다 |
 | 4 | **상태줄이 `.sh`** | 봇 터미널 아래 한 줄이 안 나올 수 있다 | 상태줄일 뿐이라 봇 동작에는 영향이 없다. 거슬리면 무시한다 |
-| 5 | **cron 이 없다** | `setup.js cron` 이 내는 두 줄은 crontab 용이다. 윈도우에는 crontab 이 없다 | 길 A(WSL)면 WSL 안에서 `cron` 을 쓴다. 길 B 면 **작업 스케줄러**에 같은 명령을 등록한다. 아침 브리핑·저녁 일지만 해당하고, 없어도 나머지는 다 돈다 |
+| 5 | **cron 이 없다** | `setup.js cron` 이 내는 두 줄은 crontab 용이다. 윈도우에는 crontab 이 없다 | **할 것 없음.** 2026-09-11 에 자동 브리핑을 두지 않기로 했다(계획 문서 9절). `brief` · `journal` 은 사람이 말을 걸 때 뜬다 |
 | 6 | **`python3` 라는 이름** | 3.2 의 상자와 같다 | `python3.exe` 를 만들어 둔다 |
 
 ### 5.2 그 기계에서 처음 밟아 봐야 아는 것

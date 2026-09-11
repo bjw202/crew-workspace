@@ -1,0 +1,24 @@
+# evo-path 판 — 2026-09-11T09:20Z (관문 B · 봇 세션 전)
+
+대상 HEAD: 7742095 (PR #10 · code/evo-path · ADR-034~037)
+IN-PROGRESS: 09:17:41Z 생성
+사본: /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy   (git archive HEAD · bots/ 비어 있었음 → 형제 봇 없음)
+과제: <사본>/projects/evo   (setup.js --project evo · MINIDISCORD_DB=<사본>/none.db · URL 127.0.0.1:9 → 서버 없음 · 대화 층 꺼짐)
+봇:   <사본>/bots/prodev-evo-bot   (allow 22 · deny 7 · env 에 CLAUDE_CODE_GIT_BASH_PATH)
+house.md: setup 이 만든 21줄 골격 그대로 (5부 직전에 fixtures/evo/house-55.md 로 덮는다)
+
+미리 놓은 것 (과제 저장소 커밋 7a99ffc):
+  charter.md · schedule.md         fixtures/evo (공급사 갈래 목표)
+  journal/2026-09-01..05.md        fixtures/evo/journal (회고 재료)
+  tmp/coating_thickness.csv        sha256 9d65a380d46e284f (40행)
+  tmp/meeting-format.md            3부 T-2 에서 "올려 놨다"고 말한다
+  bots/prodev-evo-bot/find.log     fixtures/evo/find.log (못 찾음 3줄)
+
+기계로 센 것 (봇 전):
+  npm test 133 · 0 실패 / test:server 25 · 0 실패 (2026-09-11-evo-path-tests.txt)
+  스킬 15 (도메인 14 + orchestrator) · analysis · retro 있음 · skill-matrix ### 절 15 · CLAUDE.md 27줄 · 금칙 0
+  design/v3/ADR.md ## ADR- 37 (034 분석 · 035 굳는 길 · 036 retro · 037 판별) · design/v2 변경 0줄
+  VERIFICATION 5.1 "진화 장치는 무엇으로 재나 — 다섯" 있음
+
+봇 켜는 명령 (사람):
+  cd /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/bots/prodev-evo-bot && claude --setting-sources project,local

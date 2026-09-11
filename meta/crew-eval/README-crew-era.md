@@ -32,7 +32,7 @@ crew 안에서도 같은 원리를 씁니다 — orchestrator 는 결과물을 �
 
 ## 2. 세션 여는 법
 
-    cd /Users/byunjungwon/Dev/my-project-04/crew-workspace/meta
+    cd <작업판>/crew-workspace/meta
     claude --add-dir ../crew --add-dir ../rooms --add-dir ../minidiscord
 
 `--add-dir` 은 "이 폴더도 읽고 쓸 수 있게 해 줘"라는 뜻입니다.
@@ -82,7 +82,7 @@ crew 안에서도 같은 원리를 씁니다 — orchestrator 는 결과물을 �
 
 ### 세션 열 때
 
-    cd /Users/byunjungwon/Dev/my-project-04/crew-workspace/meta
+    cd <작업판>/crew-workspace/meta
     claude --add-dir ../crew --add-dir ../rooms --add-dir ../minidiscord
 
 ### 머지 뒤 봇에게 전달할 때
@@ -92,7 +92,7 @@ crew 안에서도 같은 원리를 씁니다 — orchestrator 는 결과물을 �
     pgrep -f "mcp-config .mcp.json" | wc -l      # 0 이 나와야 합니다
 
     # 3) 받기
-    cd /Users/byunjungwon/Dev/my-project-04/crew-workspace/crew
+    cd <작업판>/crew-workspace/crew
     git pull
 
     # 4) 봇 터미널 다섯에서 원래 명령을 다시 칩니다

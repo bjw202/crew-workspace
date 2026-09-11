@@ -24,7 +24,7 @@
 
 ## 세션 여는 법
 
-    cd /Users/byunjungwon/Dev/my-project-04/crew-workspace/meta
+    cd <작업판>/crew-workspace/meta      # 작업판을 받은 자리. 회사에서는 그 기계의 경로
     claude
 
 `.claude/settings.json` 이 형제 폴더 다섯(prodev · crew · rooms · knowledge · minidiscord)을 읽을 수 있게 열어 두고, `prodev` · `crew` · `minidiscord` 의 **본 체크아웃**에 쓰는 것은 막습니다(훅 `.claude/hooks/guard.js`). 고칠 때는 crew 때처럼 worktree(`../prodev-wt-<이름>/`)를 떠서 PR 로 올립니다. 관문이 진행 중일 때는 `prodev-review/runs/IN-PROGRESS` 파일을 두어 worktree 까지 막습니다. 검수가 끝나면 그 파일을 지웁니다. 세션이 막히면 그것은 규칙이 작동한 것입니다.

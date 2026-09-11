@@ -1,0 +1,29 @@
+# evo-seat 계측 — 2026-09-11T08:54:57Z · evo-count.js
+사본	/var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.Osb1rgGlpR/evo-seat	HEAD cbb05ba
+A1 자리 넷	4/4	있음: analysis templates house.md .gitignore · 없음: -
+A2 .gitignore tmp/ 줄 · tmp 미추적 줄	1 · 0	
+A5 CLAUDE_CODE_GIT_BASH_PATH	1/1	C:\Program Files\Git\bin\bash.exe
+A6 Bash 항목 수 · 뺄 열여섯 잔존	10 · 0	남은 것: - · 전체: node git gh python3 mkdir ls date echo pwd cd
+허용 목록 전체	10	/var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.Osb1rgGlpR/evo-seat/bots/prodev-probe-bot/.claude/settings.json
+A3 ## 절 수 · house 절 순서(1부터)	8 · 8	1:인수인계서 (handoff-compact.m | 2:헌장 (charter.md) | 3:일정 (schedule.md) | 4:열린 실 (threads/) | 5:어제 일지 (journal/2026-09-1 | 6:색인 머리 (index.md) | 7:마지막 일지 | 8:이 과제의 규칙 (house.md)
+A4 51줄 → 실린 규칙 줄 · 잘림 표시	50 · 1	## 이 과제의 규칙 (house.md) (앞부분만 · 잘림)
+A7 allow 에 없는 호출	3	.claude/skills/prodev-orchestrator/SKILL.md:16 find | .claude/skills/prodev-orchestrator/SKILL.md:17 find | .claude/skills/prodev-orchestrator/SKILL.md:31 find
+호출된 명령 분포	node:12 git:6 python3:1 date:5 find:3	
+## house.md 머리 (사본 probe 과제)
+# 이 과제에서 일하는 방식
+
+여기 적힌 것은 **규칙**이다. 사실(헌장 · 일정 · 카드 · 일지)은 다른 파일에 있다.
+봇이 켜질 때마다 session-start 훅이 이 파일을 싣는다.
+
+**상한 50줄이다.** 넘으면 뒷부분이 안 실린다. 새 규칙을 넣을 때 낡은 규칙을 뺀다.
+넘쳤을 때 봇은 사람에게 말하고 **스스로 줄이지 않는다.**
+
+## .gitignore
+tmp/
+## setup-probe.log 끝
+  PATH  8개 폴더 · 변수 참조 없음
+  명령  14개 모두 풀림
+  압축 문턱  650,000 토큰 (PRODEV_AUTOCOMPACT=<값>)
+
+⑤ 다음
+  서버를 켜고 다시 돌려라: cd "/var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.Osb1rgGlpR/evo-seat/no-minidiscord" && MINIDISCORD_BOT_FILES_DIR="/var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.Osb1rgGlpR/evo-seat/probe-projects" npm run dev -w server
