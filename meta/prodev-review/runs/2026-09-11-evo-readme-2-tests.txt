@@ -1,0 +1,19 @@
+# evo-readme-2 시험 실측 — 2026-09-11T13:55:05Z · HEAD 2378e6a · 사본 /var/folders/y4/3w12s_ns7c32yh937159cj440000gn/T/tmp.fY47YGEdqp/prodev-copy
+## npm test
+ℹ tests 133
+ℹ pass 133
+ℹ fail 0
+## npm run test:server
+✔ 시험은 실제 bots/ 를 만지지 않는다 (시험 전후 목록이 같다) (0.103584ms)
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+## 실제 bots/ (시험 뒤)
+prodev-searchgate-bot
+prodev-searchgate2-bot
+prodev-worktogether-비서
+prodev-worktogether2-비서
+## 금칙 grep (스킬·CLAUDE.md 가 세지 않는가)
+       0
+## CLAUDE.md 줄
+      27
