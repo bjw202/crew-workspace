@@ -19,7 +19,7 @@
 |---|---|---|---|
 | 1 | 로컬 서버에서 옛 토큰을 죽였다 | 서버를 잠깐 띄워 **API 로** — `DELETE /api/bots/{1..5}` (analyst · archivist · orchestrator · reporter · researcher) · `POST /api/auth/logout` 를 세션 52개 전부에 · 서버 끔. DB 를 직접 쓰지 않았다 | 새 사본에서 봇 5(prodev 것들 · 점검봇) · **세션 0** |
 | 2 | meta 의 fixture DB 둘에서 토큰을 지웠다 | `scripts/tools/db-scrub.js` (새 도구) — `bots.token` → `fixture-token-<id>` · `sessions` 삭제 · VACUUM. 대화 377건 그대로 | `dbcheck` 로 긴 토큰 0 · 세션 0 |
-| 3 | prodev 의 같은 fixture 는 PR 로 | prodev 세션에 meta 사본으로 교체하라고 청함 (`test/fixture-scrub`) | PR 머지 뒤 sha 대조 |
+| 3 | prodev 의 같은 fixture 는 PR 로 | prodev 세션에 meta 사본으로 교체하라고 청함 → **PR #14 `df2373a`** (파일 셋: fixture DB · `test/fixtures/README.md` 절 · `docs/log.md`) | **sha256 `07074113…` 로 meta 사본과 같음 · 토큰 꼴 지움×5 · 세션 0 · 시험 133 · 25 실패 0** (`-fixture-scrub-tests.txt`) |
 | 4 | 이력은 다시 쓰지 않았다 | 1번으로 옛 값이 죽었으므로 이력의 값은 쓸모없다. 두 저장소 다 그 파일은 커밋 한 번뿐이라 원하면 `git filter-repo` 로 걷어낼 수 있다 | — |
 | 5 | 계정 이름 경로를 지웠다 | 글 파일 10: `/Users/<계정>/…/crew-workspace` → `<작업판>`, 스크래치 경로 → `<작업판-meta>` · 옛 스크립트 둘(`measure.js` · `rule-cost.js`)은 `__dirname` 기준 상대 경로로 · `meta/.claude/settings.json` 은 `../prodev` 꼴 상대 경로와 `Edit(/../prodev/**)` 꼴로 | 추적 파일 grep **0** |
 | 6 | 옛 방 압축본을 다시 쌌다 | 안쪽 파일 10곳의 경로를 지우고 **안쪽 `.git/` 을 뺐다**(그 안 객체에도 경로가 있어서). 2.4MB → 480KB · 1296 → 155 파일. 옛 압축본은 이 저장소 이력에 남아 있다 | `tar -xzO \| grep` **0** |

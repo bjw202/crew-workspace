@@ -1,7 +1,7 @@
 {
   "설명": "crew-workspace 가 가리키는 저장소들. 커밋은 meta 가 검수를 끝낼 때만 올린다 (README 'git 은 이렇게 한다').",
   "repos": {
-    "prodev":      { "url": "https://github.com/bjw202/prodev.git",      "commit": "2378e6a", "검수": "2026-09-11 진화하는 비서 관문 셋 통과 (design/v3 · ADR-031~037) — A 자리 10/10 (PR #9 cbb05ba) · B 길 12/15 딱 기준선 (PR #10 7742095, 빗나간 둘은 고치지 않고 옮김) · C 짐 6/6 (PR #11 7793abc, docs/evidence 사본 여덟) · README v3 학습 자료 갱신 2차 8/8 (PR #12·#13 2378e6a, 1차는 5/8 반려). 기록 meta/prodev-review/runs/2026-09-11-evo-{seat,path,carry,readme}.md. 앞 판은 2026-09-11 검색 안정성 두 판 통과(94ed5af, 100%)" },
+    "prodev":      { "url": "https://github.com/bjw202/prodev.git",      "commit": "df2373a", "검수": "2026-09-11 공개 전환 점검 — test fixture DB 토큰 지움 (PR #14 df2373a, meta 사본과 sha 같음, 시험 133·25) ·2026-09-11 진화하는 비서 관문 셋 통과 (design/v3 · ADR-031~037) — A 자리 10/10 (PR #9 cbb05ba) · B 길 12/15 딱 기준선 (PR #10 7742095, 빗나간 둘은 고치지 않고 옮김) · C 짐 6/6 (PR #11 7793abc, docs/evidence 사본 여덟) · README v3 학습 자료 갱신 2차 8/8 (PR #12·#13 2378e6a, 1차는 5/8 반려). 기록 meta/prodev-review/runs/2026-09-11-evo-{seat,path,carry,readme}.md. 앞 판은 2026-09-11 검색 안정성 두 판 통과(94ed5af, 100%)" },
     "minidiscord": { "url": "https://github.com/bjw202/minidiscord.git", "commit": "c1ea5fd", "검수": "2026-09-10 3단계 관문 때 쓰던 판" },
     "crew":        { "url": "https://github.com/bjw202/crew.git",        "commit": "8e328b9", "검수": "닫힌 실험. 읽기만" }
   }
