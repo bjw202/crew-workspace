@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // meta 의 자리를 지키는 훅 (PreToolUse). meta 는 재고 검수한다 — 만들지 않는다.
 //
-// 막는 것 셋 (CLAUDE.md 의 규칙을 기계로 옮긴 것):
+// 막는 것 넷 (CLAUDE.md 의 규칙을 기계로 옮긴 것):
 //   1. prodev/      — 어떤 쓰기도 (Edit·Write·NotebookEdit, 그리고 Bash 의 쓰기 명령)
 //   2. crew/        — 직접 편집 (고칠 때는 worktree 를 뜬다. crew-wt-* 는 허용)
 //   3. minidiscord/ — 편집 (진단은 여기서, 수정은 그 저장소에서)
+//   4. knowledge/   — 편집 (회사 지식은 읽기만)
 // 읽기(cat·ls·grep·node 스크립트 실행·npm test)는 막지 않는다.
 // 막으면 exit 2 와 이유 한 줄. 세션은 그 줄을 읽고 다른 길을 찾는다.
 
@@ -19,6 +20,7 @@ const RULES = [
   { root: path.join(WS, 'prodev'),      why: 'prodev 본 체크아웃을 고치지 않는다. 관문 사이에 worktree 를 뜬다: git -C ../prodev worktree add -b <브랜치> ../prodev-wt-<이름> origin/main (CLAUDE.md).' },
   { root: path.join(WS, 'crew'),        why: 'crew 를 직접 고치지 않는다. 고칠 때는 worktree 를 뜬다: git -C ../crew worktree add -b <브랜치> ../crew-wt-<이름> origin/main (CLAUDE.md).' },
   { root: path.join(WS, 'minidiscord'), why: 'minidiscord 는 읽기 위해 붙였다. 고칠 것은 그 저장소에서 세션을 따로 띄운다 (CLAUDE.md).' },
+  { root: path.join(WS, 'knowledge'),   why: 'knowledge 는 읽기 위해 붙였다. 회사 지식은 meta 에서 고치지 않는다 (CLAUDE.md).' },
 ];
 
 function under(p, root) {

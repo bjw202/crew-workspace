@@ -8,12 +8,9 @@
     ],
     "deny": [
       "Edit(/../prodev/**)",
-      "Write(/../prodev/**)",
-      "NotebookEdit(/../prodev/**)",
       "Edit(/../crew/**)",
-      "Write(/../crew/**)",
       "Edit(/../minidiscord/**)",
-      "Write(/../minidiscord/**)"
+      "Edit(/../knowledge/**)"
     ]
   },
   "hooks": {
