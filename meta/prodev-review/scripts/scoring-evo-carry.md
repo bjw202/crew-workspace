@@ -18,7 +18,7 @@ meta 가 만들고 meta 가 센다. 설계 판단이 없고 세는 것이 기계
 | C-3 | `ADR.md` · `docs/log.md` 의 `docs/evidence/` 언급 | ≥ 3 | **9** ○ (ADR 2 · log 7; README 1 은 덤) | count.txt |
 | C-4 | 기억 md 에 여섯 슬러그 | 6/6 | **5/5** ○ — 기억 폴더의 파일 여섯은 슬러그 다섯 + 색인 `MEMORY.md`(슬러그 없음). 여섯을 슬러그로 센 예측이 부정확했다 | count.txt |
 | C-5 | 기억 md 에 낡은 두 곳 고침 표시 (방 · replay) | 2 | **4** ○ (둘 + 허용 목록 + 제목) | count.txt |
-| C-6 | `crew-workspace` 안 `*.md` 의 `/Users/byunjungwon` | 0 | **안내문 0** ○ — grep 원값 2 는 이 채점표와 예측 파일이 그 문자열을 "센다"고 적은 줄(자기 참조) | count.txt |
+| C-6 | `crew-workspace` 안 `*.md` 의 `/Users/<계정>` | 0 | **안내문 0** ○ — grep 원값 2 는 이 채점표와 예측 파일이 그 문자열을 "센다"고 적은 줄(자기 참조) | count.txt |
 | C-7 | `HANDOFF.md` 의 `MINIDISCORD_DB` 줄 | ≥ 1 | **1** ○ | count.txt |
 | C-8 | `HANDOFF.md` 의 과제 저장소 자리·열람자 줄 (또는 "첫날 결정" 칸) | ≥ 1 | **2 · 첫날 결정 칸 1** ○ (자리 · 열람 · 정한 날 — 빈칸) | count.txt |
 | C-9 | `WINDOWS.md` 길 C 절 | 1 | **1** ○ (`## 3-C`) | count.txt |

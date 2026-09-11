@@ -15,7 +15,7 @@ design/v3/ADR.md 2 (ADR-030 :222 · ADR-031 :245) · docs/log.md 7 · README.md 
 ## 손대지 않은 것 — git diff --stat 7742095..HEAD -- design/v2 design/v1 .claude scripts common test → 0줄
 ## C3 기억 md (notes/2026-09-11-memory.md)
 `name:` 슬러그 5 (기억 폴더 파일 6 = 슬러그 5 + 색인 MEMORY.md) · [고침] 표시 4 (낡은 두 곳 + 허용 목록 + 제목)
-## C4 *.md 의 /Users/byunjungwon (node_modules 제외)
+## C4 *.md 의 /Users/<계정> (node_modules 제외)
 grep 원값 2 — 둘 다 검수 문서 자신(scoring-evo-carry.md:21 · predictions/2026-09-11-evo-carry.md:22)이 "이 문자열을 센다"고 적은 줄. 안내문(README.md:27 · crew-eval/README-crew-era.md 셋) → 0
 ## C5 HANDOFF.md
 MINIDISCORD_DB 1 · 과제 저장소 2 · 첫날 결정 1 · bypassPermissions 1

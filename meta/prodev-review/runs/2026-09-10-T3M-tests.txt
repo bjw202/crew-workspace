@@ -1,4 +1,4 @@
-# T3.M 시험 실측 — 2026-09-10T09:28:24Z · HEAD 358cc0a · 사본 /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/316f27b5-f990-4431-a0b5-052720af587c/scratchpad/repo-t3m
+# T3.M 시험 실측 — 2026-09-10T09:28:24Z · HEAD 358cc0a · 사본 /private/tmp/claude-501/<작업판-meta>/316f27b5-f990-4431-a0b5-052720af587c/scratchpad/repo-t3m
 ## npm test
 ℹ tests 81
 ℹ pass 81

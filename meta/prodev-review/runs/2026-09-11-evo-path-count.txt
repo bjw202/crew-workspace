@@ -18,8 +18,8 @@ B4 cpk_AlphaParts	○	정답 0.655 (0.03)
 B4 합	5/5	
 ## B5 카드 · 색인
 cards 3 errors 0 E-0001:valid E-0002:valid E-0003:valid
-/private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/projects/evo/cards/E-0002.md:3
-/private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/projects/evo/cards/E-0003.md:3
+/private/tmp/claude-501/<작업판-meta>/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/projects/evo/cards/E-0002.md:3
+/private/tmp/claude-501/<작업판-meta>/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/projects/evo/cards/E-0003.md:3
 ## B7 B10 templates · house
 주간-보고.md
 회의-문서.md

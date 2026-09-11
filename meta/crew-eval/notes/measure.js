@@ -13,7 +13,7 @@ const os = require('os');
 const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
-const SRC = '/Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord/server/data/minidiscord.db';
+const SRC = process.env.MINIDISCORD_DB || require('path').resolve(__dirname, '..', '..', '..', 'minidiscord', 'server', 'data', 'minidiscord.db');   // <작업판>/minidiscord/server/data — 절대 경로를 뺐다 (2026-09-11 공개 전환)
 const [loArg, hiArg, nameArg] = process.argv.slice(2);
 if (!loArg || !hiArg) {
   console.error('쓰는 법: node notes/measure.js <시작 message_id> <끝 message_id> [이름]');

@@ -14,11 +14,11 @@ SKILL.md 500줄 초과: 0
 오케스트레이터 본문 줄: 20
 CLAUDE.md 줄:       24
 만들면 안 되는 것:
-  ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/commands: No such file or directory
-  ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/hooks: No such file or directory
-  ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/settings.json: No such file or directory
-  ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/settings.local.json: No such file or directory
-  ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.mcp.json: No such file or directory
+  ls: <작업판>/prodev/.claude/commands: No such file or directory
+  ls: <작업판>/prodev/.claude/hooks: No such file or directory
+  ls: <작업판>/prodev/.claude/settings.json: No such file or directory
+  ls: <작업판>/prodev/.claude/settings.local.json: No such file or directory
+  ls: <작업판>/prodev/.mcp.json: No such file or directory
 
 ## 지침이 세지 않는가
 (위에 줄이 없으면 0)

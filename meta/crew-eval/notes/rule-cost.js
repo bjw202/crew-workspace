@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const CREW = '/Users/byunjungwon/Dev/my-project-04/crew-workspace/crew';
+const CREW = require('path').resolve(__dirname, '..', '..', '..', 'crew');   // <작업판>/crew — 기계에 묶인 절대 경로를 뺐다 (2026-09-11 공개 전환)
 const BOTS = ['orchestrator', 'analyst', 'archivist', 'researcher', 'reporter'];
 const CACHE_READ = 0.5;            // $/1M — 표준단가. retro-cost.js 와 같은 값이다
 const CHARS_PER_TOKEN = 1.6;       // 한국어 혼합 대략값. 정확한 토큰 수가 아니다

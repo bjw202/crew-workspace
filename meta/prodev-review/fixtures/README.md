@@ -40,4 +40,4 @@
 결재 검사의 표식은 `[발송]` 글의 `결재 #<id>` 이고 (어느 방이든, ADR-022), 그 글의 작성자가 charter 의 PL 과 같아야 통과다 (#5 는 PL, #6 은 과제원).
 
 ## chat/ — chat.js 시험 (T1.2)
-`minidiscord.db` 하나. 2026-09-08~09 crew 방(수율개선-2026q3)의 실제 대화 377건을 WAL 을 합쳐 파일 하나로 만든 사본이다. 서버와 무관하다. 기대 건수는 prodev 가 이 사본으로 직접 세어 시험에 적는다 (예: `search 샤워헤드 --limit 4` → 4건, `around 300 --before 2 --after 2` → 5건, `show 2` 의 첨부 0).
+`minidiscord.db` 하나. 2026-09-08~09 crew 방(수율개선-2026q3)의 실제 대화 377건을 WAL 을 합쳐 파일 하나로 만든 사본이다. 서버와 무관하다. **토큰은 지운 것이다** — `bots.token` 은 `fixture-token-<id>`, `sessions` 는 0행 (`../scripts/tools/db-scrub.js`, 2026-09-11 공개 전환). 사본을 새로 뜨면 같은 도구를 먼저 돌린다. 기대 건수는 prodev 가 이 사본으로 직접 세어 시험에 적는다 (예: `search 샤워헤드 --limit 4` → 4건, `around 300 --before 2 --after 2` → 5건, `show 2` 의 첨부 0).

@@ -2,7 +2,7 @@
 
 대상 HEAD: 7742095 (PR #10 · code/evo-path · ADR-034~037)
 IN-PROGRESS: 09:17:41Z 생성
-사본: /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy   (git archive HEAD · bots/ 비어 있었음 → 형제 봇 없음)
+사본: /private/tmp/claude-501/<작업판-meta>/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy   (git archive HEAD · bots/ 비어 있었음 → 형제 봇 없음)
 과제: <사본>/projects/evo   (setup.js --project evo · MINIDISCORD_DB=<사본>/none.db · URL 127.0.0.1:9 → 서버 없음 · 대화 층 꺼짐)
 봇:   <사본>/bots/prodev-evo-bot   (allow 22 · deny 7 · env 에 CLAUDE_CODE_GIT_BASH_PATH)
 house.md: setup 이 만든 21줄 골격 그대로 (5부 직전에 fixtures/evo/house-55.md 로 덮는다)
@@ -21,4 +21,4 @@ house.md: setup 이 만든 21줄 골격 그대로 (5부 직전에 fixtures/evo/h
   VERIFICATION 5.1 "진화 장치는 무엇으로 재나 — 다섯" 있음
 
 봇 켜는 명령 (사람):
-  cd /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/bots/prodev-evo-bot && claude --setting-sources project,local
+  cd /private/tmp/claude-501/<작업판-meta>/4d073fbd-24a5-4142-8cf4-d7ac70edf02b/scratchpad/evo-copy/bots/prodev-evo-bot && claude --setting-sources project,local

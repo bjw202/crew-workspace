@@ -145,8 +145,8 @@ HEAD=fb3692c
 meta 원본과 동일
 
 ## 예측 파일이 이 단계 전에 있었나
-Sep 10 13:53:46 2026 /Users/byunjungwon/Dev/my-project-04/crew-workspace/meta/prodev-review/predictions/prodev-prediction.md
+Sep 10 13:53:46 2026 <작업판>/meta/prodev-review/predictions/prodev-prediction.md
 
 ## 하네스 산출물이 없어야 한다 (1단계 관문 전 하네스 금지)
-ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/agents: No such file or directory
-ls: /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/.claude/skills: No such file or directory
+ls: <작업판>/prodev/.claude/agents: No such file or directory
+ls: <작업판>/prodev/.claude/skills: No such file or directory

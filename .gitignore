@@ -21,6 +21,8 @@ node_modules/
 .DS_Store
 
 # 예외: meta 의 시험용 DB 둘은 검수 자료라 올린다 (훅 정답지용 · 대화 검색용 사본)
+# 올리기 전에 반드시 토큰을 지운다: node meta/prodev-review/scripts/tools/db-scrub.js <db>
+# (2026-09-11 공개 전환 때 chat/minidiscord.db 에 살아 있는 봇·세션 토큰이 든 채 올라가 있었다 — 서버에서 죽이고 fixture 를 지웠다)
 !/meta/prodev-review/fixtures/hooks/fixture.db
 !/meta/prodev-review/fixtures/chat/minidiscord.db
 

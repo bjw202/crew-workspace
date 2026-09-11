@@ -1,20 +1,19 @@
 {
   "permissions": {
     "additionalDirectories": [
-      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev",
-      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/crew",
-      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/rooms",
-      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/knowledge",
-      "/Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord"
+      "../prodev",
+      "../crew",
+      "../knowledge",
+      "../minidiscord"
     ],
     "deny": [
-      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
-      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
-      "NotebookEdit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/**)",
-      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/crew/**)",
-      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/crew/**)",
-      "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord/**)",
-      "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/minidiscord/**)"
+      "Edit(/../prodev/**)",
+      "Write(/../prodev/**)",
+      "NotebookEdit(/../prodev/**)",
+      "Edit(/../crew/**)",
+      "Write(/../crew/**)",
+      "Edit(/../minidiscord/**)",
+      "Write(/../minidiscord/**)"
     ]
   },
   "hooks": {
