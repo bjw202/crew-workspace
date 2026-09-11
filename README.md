@@ -29,7 +29,7 @@ crew-workspace/                         ← 이 저장소
 │       └── minidiscord.db              ★ 채팅 DB. 계정 · 봇 계정 · 방 · 글이 전부 여기
 ├── meta/                               검수 자리. 예측 · 정답지 · 대본 · 검수 기록 · 인수인계
 ├── crew/                               옛 실험(봇 다섯). 2026-09-09 닫음. 읽기만        (자기 저장소 bjw202/crew)
-├── README.md · workspace.json · bootstrap.sh · .gitignore
+├── README.md · WINDOWS.md · workspace.json · bootstrap.sh · .gitignore · .gitattributes
 ```
 
 채팅 서버 안(★ 그 DB 안)에만 있는 것:
@@ -48,7 +48,7 @@ minidiscord.db
 
 | 폴더 | git |
 |---|---|
-| `meta/` · 루트 파일 넷 · `projects/`(빈 폴더 표시만) | **이 저장소**(crew-workspace)가 담는다 |
+| `meta/` · 루트 파일 여섯 · `projects/`(빈 폴더 표시만) | **이 저장소**(crew-workspace)가 담는다 |
 | `prodev/` · `minidiscord/` · `crew/` | 각자 저장소. 이 저장소는 `workspace.json` 으로 커밋만 가리킨다 |
 | `projects/수율개선/` 같은 과제 내용 | 각 과제가 자기 git. **여기에 올리지 않는다** (회사 자료) |
 | `knowledge/` | 작은 저장소 (원격은 회사에서 정한다) |
@@ -61,7 +61,7 @@ minidiscord.db
 
 ```
 crew-workspace  (GitHub: bjw202/crew-workspace)
-├── README.md · workspace.json · bootstrap.sh · .gitignore
+├── README.md · WINDOWS.md · workspace.json · bootstrap.sh · .gitignore · .gitattributes
 ├── meta/                ← 직접 담는다
 ├── prodev/              ← .gitignore. 자기 저장소 (bjw202/prodev)
 ├── minidiscord/         ← .gitignore. 자기 저장소 (bjw202/minidiscord)
@@ -69,12 +69,38 @@ crew-workspace  (GitHub: bjw202/crew-workspace)
 └── projects/            ← .gitignore. 회사 자료
 ```
 
+### 무엇이 필요한가 (기계 하나에 한 번)
+
+Node ≥ 22 · npm · git · python3(+ openpyxl · matplotlib) · Claude Code + minidiscord 채널 플러그인 · 인터넷.
+
+그리고 **셸 하나** — 이 작업판은 처음부터 끝까지 유닉스 셸을 전제로 한다. `bootstrap.sh` 만이 아니라,
+봇의 허용 목록(`grep` · `sed` · `awk` · `python3` · `shasum` …) · 상태줄(`common/statusline.sh`) ·
+meta 의 검수 도구(`gate-tests.sh` · `replay.sh` · `weekly.sh`) · README 의 서버 켜는 명령(`VAR=값 명령` 꼴)이
+전부 그렇다.
+
+| 운영체제 | 무엇을 깔고 | 어디서 명령을 치나 |
+|---|---|---|
+| macOS · Linux | 이미 있다 | 기본 터미널 |
+| 윈도우 | **WSL 2**(권함) 또는 **Git for Windows**(Git Bash) 하나 | 그 Ubuntu 창 또는 Git Bash 창 |
+
+**윈도우 사람은 [`WINDOWS.md`](WINDOWS.md) 를 먼저 읽는다** — 둘 중 무엇을 고르나, 무엇을 깔고, 깔고 나서
+무엇을 한 번 쳐서 확인하나, 그리고 윈도우에서만 생기는 자리 여섯이 거기 있다.
+
+윈도우에서 PowerShell · CMD 로는 돌지 않는다. **PowerShell 판 스크립트를 따로 두지 않는 것은 일부러다** —
+바꿔야 할 것이 bootstrap 하나가 아니라 위의 넷 전부이고, 사본을 두면 `workspace.json` 의 뜻이 두 군데로
+갈라진다. 셸 하나를 깔면 넷이 한꺼번에 풀린다. (Claude Code 자체는 윈도우에서 Git for Windows 없이도 돌지만,
+그때는 Bash 도구 대신 PowerShell 도구를 쓴다 — 봇의 허용 목록이 그 위에서 맞지 않는다.)
+
+WSL 2 를 고르면 작업판을 WSL 쪽 파일 시스템(`~/…`)에 두는 편이 낫다. `/mnt/c/…` 는 git 과
+`node:sqlite` 가 느리다.
+
 ### 처음 받을 때 (새 기계)
 ```bash
 git clone https://github.com/bjw202/crew-workspace.git
 cd crew-workspace
-zsh bootstrap.sh            # workspace.json 을 읽어 prodev · minidiscord · crew 를 적힌 커밋으로 받는다
+sh bootstrap.sh             # workspace.json 을 읽어 prodev · minidiscord · crew 를 적힌 커밋으로 받는다
 ```
+윈도우면 같은 세 줄을 **Git Bash 창** 또는 **WSL 터미널**에서 친다.
 
 ### 평소
 - prodev 를 고칠 때: `cd prodev` 에서 브랜치를 만들고 PR. 이 저장소는 모른다.

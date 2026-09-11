@@ -1,0 +1,25 @@
+# 줄끝 규칙 — 좁게만 건다.
+#
+# 까닭: Git for Windows 는 기본값이 core.autocrlf=true 라, 받을 때 텍스트 파일을 CRLF 로 바꾼다.
+# 셸 스크립트가 그렇게 되면 `#!/bin/sh` 뒤에 \r 이 붙어 Git Bash 에서 "bad interpreter" 로 죽는다.
+# 윈도우 사람이 처음 `sh bootstrap.sh` 를 칠 때 가장 먼저 걸리는 자리라 저장소가 막아 둔다 (WINDOWS.md 5.1).
+#
+# `* text=auto` 는 일부러 쓰지 않는다. 그것을 걸면 git 이 `meta/crew-eval/` 의 실험 자료 csv 아홉 개를
+# LF 로 다시 써 버린다 — 그 csv 는 윈도우 엑셀에서 나온 CRLF 원본이고, 바이트가 바뀌면 검수 자료가 아니게 된다.
+# 그래서 "돌아가야 하는 파일"에만 LF 를 박고, 자료는 손대지 않는다.
+
+*.sh   text eol=lf
+*.js   text eol=lf
+*.mjs  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+
+# 자료와 사본은 git 이 줄끝을 만지지 않는다 (원본 그대로 보존)
+*.csv    -text
+*.db     binary
+*.db-wal binary
+*.db-shm binary
+*.jsonl  -text
+*.tar.gz binary
+*.png    binary
+*.jpg    binary

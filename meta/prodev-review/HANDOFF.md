@@ -16,6 +16,12 @@
 prodev 쪽 절차는 `../../prodev/docs/launch.md` 가 진실이다. meta 가 덧붙이는 것만 적는다.
 1. `crew-workspace/` 통째로 복사. **서버 DB 를 새로 시작하면 `prodev/bots/` 와 `minidiscord/testplace/` 는 안 가져가도 된다** — 봇 폴더는 `setup.js` 가 새 경로로 다시 만들고 봇도 새로 등록한다. **서버 DB 를 가져가면 봇 폴더의 `.env`(봇 토큰)도 같이 가져가야 한다** — DB 에 봇이 있는데 토큰이 없으면 `.mcp.json` 이 안 생겨 봇이 안 뜬다(launch.md 10.2, 세 갈래). `runs/.tokens.env` 는 지운다(이 기계 시험 서버의 토큰).
 2. 필요한 것: Node ≥ 22(`node:sqlite`) · npm · python3 + openpyxl · matplotlib(없으면 xlsx · 그림만 빠짐) · `pdftotext`(선택) · Claude Code + minidiscord 채널 플러그인 · 인터넷(리서치).
+   **회사 PC 가 윈도우면 Git for Windows(Git Bash) 나 WSL 2 를 먼저 깐다.** 작업판이 유닉스 셸을 전제로 한다 —
+   `bootstrap.sh` · 봇 허용 목록(`grep` · `sed` · `python3` …) · `common/statusline.sh` · meta 의 도구 셋이 전부. PowerShell · CMD 로는 안 된다.
+   Claude Code 는 Git for Windows 없이도 돌지만 그때는 Bash 대신 PowerShell 도구를 쓰고, 봇 허용 목록이 그 위에서 맞지 않는다.
+   **세우는 절차는 `../../WINDOWS.md` 가 진실이다** — 길 둘(WSL 2 권함 · Git Bash), 깔고 나서 한 번 치는 점검(4절),
+   윈도우에서만 생기는 자리 여섯(5.1)과 아직 아무도 밟아 본 적 없는 다섯(5.2). `setup.js` 의 윈도우 갈래에 뚫린 둘은
+   `notes/2026-09-10-between-gates.md` 의 덧붙임(6 · 7)에 있다 — 윈도우 기계가 생기면 그 둘을 먼저 잰다.
 3. minidiscord 서버는 **실전 포트 · 실전 DATA_DIR** 로. `MINIDISCORD_BOT_FILES_DIR` 은 과제 저장소들의 부모(예: `<루트>/projects`). 사람 계정: PL · 과제원들 · `prodev-알림`(알림용 사람 계정, 봇 아님).
 4. `setup.js --project <과제이름>`(폴더가 없으면 `$MINIDISCORD_BOT_FILES_DIR/<이름>` 에 만들고 git init, ADR-023) (서버가 켜져 있으면 알림 계정 `prodev-notify` 의 토큰도 `.env` 에 스스로 넣는다, ADR-024) → `setup.js rooms <과제>`(방 둘: 본방 · `/files`, ADR-022) → 봇 켜기(launch.md 4절 명령) → 본방에 `@TO(<봇>) 안녕`.
 5. cron 은 `setup.js cron` 이 내는 두 줄을 PL PC 의 crontab 에 붙인다(3단계에서는 안 붙였다).
