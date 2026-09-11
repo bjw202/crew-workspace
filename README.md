@@ -1,6 +1,45 @@
 # crew-workspace
 
-과제 비서 봇 **prodev** 를 만들고(prodev), 검수하고(meta), 돌리는(minidiscord + projects) 자리 하나.
+과제 비서 봇 **prodev** — 봇을 움직이는 **하네스**를 만들고(`prodev/`), 검수하고(`meta/`), 채팅 창구에 붙여 돌리는(`minidiscord/` + `projects/`) 자리 하나.
+
+## 한눈에 — 하네스가 핵심이고, 채팅은 창구다
+
+이 작업판에서 만든 것은 채팅 봇이 아니라 **비서 세션 하나를 움직이는 하네스**다. 지침 열한 줄 · 스킬 열다섯 · 훅 셋 · 스크립트 열 · 도우미 여섯이 그것이고, 전부 `prodev/` 에 있다.
+채팅 서버(minidiscord)는 사람이 봇에게 말을 거는 **창구**일 뿐이다. 봇의 기억은 채팅이 아니라 **과제 폴더의 파일**에 있고, 창구를 바꿔 끼워도 하네스와 과제 폴더는 그대로다.
+
+```mermaid
+flowchart LR
+    P["사람<br/>PL · 과제원"] -->|"말 · 파일"| GATE["창구<br/>minidiscord 방 둘<br/>(본방 · files)"]
+    GATE -->|"글이 오면 깨운다"| BOT
+
+    subgraph BOT["비서 세션 하나 — 하네스 (prodev/)"]
+        direction TB
+        RULE["CLAUDE.md 열한 줄<br/>정하는 것"]
+        SKILL["스킬 15<br/>일하는 방법 · 언제 무엇을"]
+        HOOK["훅 3<br/>켤 때 싣고 · 압축 전 남기고 · 보내기 전 막는다"]
+        SCRIPT["스크립트 10<br/>세고 찾고 옮기는 손"]
+        AGENT["도우미 6<br/>오래 걸리는 일 · 다른 문맥의 검토"]
+    end
+
+    BOT -->|"읽고 쓰고 커밋"| REPO
+
+    subgraph REPO["과제 폴더 (projects/&lt;과제&gt;/ · git 하나)"]
+        direction TB
+        FACT["사실<br/>charter · schedule · inbox · cards · wiki · journal"]
+        WAY["방식 — 쓸수록 굳는 것<br/>house.md · templates/ · analysis/"]
+    end
+
+    REPO -->|"켤 때 여기서 기억을 되찾는다"| BOT
+    META["meta/<br/>예측 → 시험 자료 → 직접 돌려 센다 → 기록"] -.->|"관문마다 검수"| BOT
+```
+
+읽는 법은 셋이다.
+
+- **왼쪽(창구)은 바꿔 끼울 수 있다.** 봇은 채팅 서버를 통해 말을 받을 뿐, 사실은 전부 과제 폴더에 파일로 남긴다. 세션이 꺼져도, 서버를 바꿔도 잊지 않는다.
+- **가운데(하네스)가 이 작업판의 본체다.** "세는 것과 막는 것은 기계(훅 · 스크립트), 정하는 것은 지침, 일하는 방법은 스킬" — 지침은 짧게 두고 절차는 스킬과 훅이 진다. 무엇이 왜 이렇게 생겼는지는 `prodev/README.md` 가 그림으로 설명한다.
+- **오른쪽(과제 폴더)은 사실과 방식으로 갈린다.** 카드 · 위키 · 일지는 **사실**이라 자동으로 쌓이고, `house.md`(규칙) · `templates/`(양식) · `analysis/`(방법)는 사람이 "앞으로"라고 했을 때만 **굳는다**. 이것이 v3 "쓸수록 맞아 가는 비서"의 자리다.
+
+**지금 판**: prodev `design/v3` (ADR-031~037). 검수 기록은 `meta/prodev-review/runs/`, 가리키는 커밋은 `workspace.json`. 회사로 옮길 때는 `meta/prodev-review/HANDOFF.md` 와 `WINDOWS.md` 3-C 부터.
 
 ## 무엇이 어디에 있나
 
@@ -8,8 +47,12 @@
 
 ```
 crew-workspace/                         ← 이 저장소
-├── prodev/                             봇의 코드 · 스킬 · 훅 · 설계 문서        (자기 저장소 bjw202/prodev)
-│   ├── scripts/setup.js                과제를 여는 명령
+├── prodev/                             하네스 — 지침 · 스킬 15 · 훅 3 · 스크립트 10 · 도우미 6 · 설계 문서(design/v3)   (자기 저장소 bjw202/prodev)
+│   ├── CLAUDE.md                       봇 지침 열한 줄
+│   ├── .claude/skills/ · agents/       일하는 방법 · 도우미
+│   ├── common/hooks/                   session-start · pre-compact · pre-reply
+│   ├── scripts/setup.js                과제를 여는 명령 (나머지 스크립트는 봇의 손)
+│   ├── docs/evidence/                  meta 판정 기록의 사본 (회사로 갈 때 이력이 끊겨서)
 │   └── bots/
 │       └── prodev-수율개선-bot/         과제 하나의 봇 설정. setup 이 만든다
 │           ├── .claude/settings.json     훅 · 허용 목록
@@ -18,11 +61,14 @@ crew-workspace/                         ← 이 저장소
 │           └── rooms.json                "내 방은 8번과 9번" 같은 방 번호표
 ├── projects/                           과제 자료 창고. 과제 하나 = 폴더 하나 = git 하나
 │   └── 수율개선/                        setup 이 만든다. 봇이 여기에 쓴다
-│       ├── charter.md · schedule.md      헌장 · 일정
-│       ├── inbox/                        사람이 올린 원본 (불변)
-│       ├── cards/                        실험 카드 (원본을 읽어 정리한 것)
-│       ├── wiki/                         카드에서 자란 지식
-│       └── journal/ · research/ · report/ · paper/ · patent/
+│       ├── charter.md · schedule.md      헌장 · 일정                      ┐
+│       ├── inbox/                        사람이 올린 원본 (불변)           │ 사실 — 자동으로 쌓인다
+│       ├── cards/                        실험 카드 (원본을 읽어 정리한 것)  │
+│       ├── wiki/                         카드에서 자란 지식                │
+│       ├── journal/ · research/ · report/ · paper/ · patent/             ┘
+│       ├── house.md                      이 사람과 일하는 규칙 (상한 50줄)   ┐
+│       ├── templates/                    가르친 양식                       │ 방식 — 사람이 "앞으로"라 했을 때만 굳는다
+│       └── analysis/                     분석 한 건 = run.py + 여섯 칸 run.md + 카드 ┘
 ├── knowledge/                          회사 지식. 과제가 끝날 때 그 과제 wiki 에서 골라 올린 페이지 (PL 결재 뒤 봇의 close 스킬이 쓴다)
 ├── minidiscord/                        채팅 서버 코드                             (자기 저장소 bjw202/minidiscord)
 │   └── data/
@@ -71,25 +117,24 @@ crew-workspace  (GitHub: bjw202/crew-workspace)
 
 ### 무엇이 필요한가 (기계 하나에 한 번)
 
-Node ≥ 22 · npm · git · python3(+ openpyxl · matplotlib) · Claude Code + minidiscord 채널 플러그인 · 인터넷.
+Node ≥ 22 · npm · git · python3 · Claude Code + minidiscord 채널 플러그인 · 인터넷.
+python 꾸러미는 둘로 갈린다 — 봇이 쓰는 `openpyxl` · `matplotlib`(없으면 xlsx 와 그림만 빠진다), 분석에 쓰는 `pandas` · `scipy` · `statsmodels`(없으면 `analysis` 스킬이 멈추고 말한다). **둘 다 사람이 미리 깐다.** 봇은 깔지 않는다.
 
-그리고 **셸 하나** — 이 작업판은 처음부터 끝까지 유닉스 셸을 전제로 한다. `bootstrap.sh` 만이 아니라,
-봇의 허용 목록(`grep` · `sed` · `awk` · `python3` · `shasum` …) · 상태줄(`common/statusline.sh`) ·
-meta 의 검수 도구(`gate-tests.sh` · `replay.sh` · `weekly.sh`) · README 의 서버 켜는 명령(`VAR=값 명령` 꼴)이
-전부 그렇다.
+그리고 **Git Bash 가 닿는 자리** — 봇은 Claude Code 의 Bash 도구로 `node` · `git` · `python3` 를 부른다(허용 목록은 열 건뿐이다. `grep` 같은 유닉스 도구는 v3 에서 뺐다 — 내장 `Read` · `Grep` · `Glob` 이 덮는다).
+`bootstrap.sh` · 상태줄(`common/statusline.sh`) · meta 의 검수 도구 셋(`gate-tests.sh` · `replay.sh` · `weekly.sh`, zsh) · README 의 서버 켜는 명령(`VAR=값 명령` 꼴)도 셸 위에서 돈다.
 
 | 운영체제 | 무엇을 깔고 | 어디서 명령을 치나 |
 |---|---|---|
 | macOS · Linux | 이미 있다 | 기본 터미널 |
-| 윈도우 | **WSL 2**(권함) 또는 **Git for Windows**(Git Bash) 하나 | 그 Ubuntu 창 또는 Git Bash 창 |
+| 윈도우 · WSL 2 | WSL 2 + 그 안에 Node · git · python3 · Claude Code | Ubuntu 창 (`WINDOWS.md` 길 A) |
+| 윈도우 · Git Bash | Git for Windows + 윈도우용 Node · Python · Claude Code | Git Bash 창 (길 B) |
+| **윈도우 · PowerShell + Git Bash** (회사 PC) | Git for Windows 가 이미 있으면 **PowerShell 에서 `claude` 를 켜도 된다** — Claude Code 안에서 Bash 도구가 Git Bash 를 쓴다 (2026-09-11 실측) | PowerShell (길 C · **첫날 점검표**) |
 
-**윈도우 사람은 [`WINDOWS.md`](WINDOWS.md) 를 먼저 읽는다** — 둘 중 무엇을 고르나, 무엇을 깔고, 깔고 나서
-무엇을 한 번 쳐서 확인하나, 그리고 윈도우에서만 생기는 자리 여섯이 거기 있다.
+**윈도우 사람은 [`WINDOWS.md`](WINDOWS.md) 를 먼저 읽는다** — 길 셋 중 무엇을 고르나, 무엇을 깔고, 깔고 나서
+무엇을 한 번 쳐서 확인하나, 윈도우에서만 생기는 자리, 그리고 첫날 점검표가 거기 있다.
 
-윈도우에서 PowerShell · CMD 로는 돌지 않는다. **PowerShell 판 스크립트를 따로 두지 않는 것은 일부러다** —
-바꿔야 할 것이 bootstrap 하나가 아니라 위의 넷 전부이고, 사본을 두면 `workspace.json` 의 뜻이 두 군데로
-갈라진다. 셸 하나를 깔면 넷이 한꺼번에 풀린다. (Claude Code 자체는 윈도우에서 Git for Windows 없이도 돌지만,
-그때는 Bash 도구 대신 PowerShell 도구를 쓴다 — 봇의 허용 목록이 그 위에서 맞지 않는다.)
+**PowerShell 판 스크립트를 따로 두지 않는 것은 일부러다** — 사본을 두면 `workspace.json` 의 뜻이 두 군데로 갈라진다.
+Git Bash 하나가 있으면 봇의 손은 그대로 맞고, 안 맞는 것은 meta 의 zsh 도구 셋뿐이다(회사에서는 `evo-count.js` 같은 node 도구로 대신한다).
 
 WSL 2 를 고르면 작업판을 WSL 쪽 파일 시스템(`~/…`)에 두는 편이 낫다. `/mnt/c/…` 는 git 과
 `node:sqlite` 가 느리다.
@@ -174,7 +219,7 @@ node scripts/setup.js rooms 수율개선
 > | 토큰 | 무엇 | 누가 받나 |
 > |---|---|---|
 > | `MINIDISCORD_TOKEN` | 봇 계정의 토큰. 봇 세션이 채팅 서버에 붙을 때 쓴다 | setup ② 가 봇을 등록하면서 받는다 |
-> | `PRODEV_NOTIFY_TOKEN` | 알림 계정 `prodev-notify` 의 세션 쿠키. 봇이 꺼져 있을 때 훅과 cron 이 글을 올릴 때 쓴다 | setup ② 가 그 계정으로 로그인하면서 받는다 |
+> | `PRODEV_NOTIFY_TOKEN` | 알림 계정 `prodev-notify` 의 세션 쿠키. 봇이 꺼져 있을 때 훅이 글을 올릴 때 쓴다 | setup ② 가 그 계정으로 로그인하면서 받는다 |
 >
 > 사람이 브라우저에서 쿠키를 꺼내거나, 값을 복사해 붙이거나, `.env` 를 열어 고칠 일이 **없다.** `.env` 를 열어 보면 줄마다 무엇인지 풀이가 한 줄씩 있다.
 > 조건은 하나 — **1단계의 채팅 서버가 켜져 있을 것.** 서버가 꺼진 채 setup 을 돌리면 폴더와 설정만 만들고 "서버 없음, 건너뜀"이라 말한 뒤 끝난다. 서버를 켜고 같은 명령을 한 번 더 돌리면 그때 등록하고 토큰을 받는다 (이미 된 것은 건드리지 않는다).
@@ -187,7 +232,9 @@ node scripts/setup.js rooms 수율개선
 
 봇 이름은 `prodev-<과제>-bot` 꼴로 setup 이 붙인다. 사람이 채팅에서 봇을 부를 때 이 이름을 쓴다: `@TO(prodev-수율개선-bot) …`.
 
-`prodev-notify` 는 무엇인가. 봇이 켜져 있지 않은 순간에도 방에 글이 올라가야 할 때가 있다 — 아침 브리핑 예약(cron), 봇의 기억이 압축되기 직전의 "정리 중입니다". 채팅 서버는 봇 글을 봇 세션을 통해서만 받으므로 이런 글은 **사람 계정 하나**가 대신 올린다. 그 계정이 `prodev-notify` 다(봇이 아니라 이름만 그런 사람 계정). setup 이 이 계정으로 한 번 로그인해 받은 세션 쿠키를 `.env` 의 `PRODEV_NOTIFY_TOKEN` 에 넣어 두고, 훅과 cron 이 그것으로 글을 올린다. `.env` 를 열면 그 줄 위에 이 풀이가 한 줄 적혀 있다. 사람이 할 일은 없다 (서버가 꺼진 채 setup 을 돌렸다면 서버를 켜고 한 번 더 돌리면 받는다).
+`prodev-notify` 는 무엇인가. 봇이 켜져 있지 않은 순간에도 방에 글이 올라가야 할 때가 있다 — 봇의 기억이 압축되기 직전의 "정리 중입니다"와 직후의 "정리가 끝났습니다". 채팅 서버는 봇 글을 봇 세션을 통해서만 받으므로 이런 글은 **사람 계정 하나**가 대신 올린다. 그 계정이 `prodev-notify` 다(봇이 아니라 이름만 그런 사람 계정). setup 이 이 계정으로 한 번 로그인해 받은 세션 쿠키를 `.env` 의 `PRODEV_NOTIFY_TOKEN` 에 넣어 두고, 훅이 그것으로 글을 올린다. `.env` 를 열면 그 줄 위에 이 풀이가 한 줄 적혀 있다. 사람이 할 일은 없다 (서버가 꺼진 채 setup 을 돌렸다면 서버를 켜고 한 번 더 돌리면 받는다).
+
+아침 브리핑과 저녁 일지를 **정해진 시각에 저절로 올리지는 않는다** (2026-09-11 결정 — cron 도 작업 스케줄러도 없다). "오늘 뭐 있지" · "정리해 둬" 라고 사람이 말을 걸 때 `brief` · `journal` 이 뜬다. 자리에 없을 때 쌓이는 브리핑보다 말을 걸 때 나오는 브리핑이 반드시 읽힌다.
 
 **3. 봇 세션** (봇 폴더에서)
 ```bash
@@ -207,7 +254,9 @@ claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.jso
 
 사람이 외울 규칙은 한 줄: **말은 아무 데서나, 파일은 files 에.**
 
-더 자세한 것(cron 등록 · 문제가 날 때 · 왜 이렇게 됐나)은 `prodev/docs/launch.md`. 검수 쪽 인수인계는 `meta/prodev-review/HANDOFF.md`.
+더 자세한 것(문제가 날 때 · 왜 이렇게 됐나 · 다른 기계로 옮길 때)은 `prodev/docs/launch.md`. 검수 쪽 인수인계는 `meta/prodev-review/HANDOFF.md`.
 
-### 시험할 때는 서버를 따로 띄운다
-살아 있는 방을 건드리지 않으려고 **포트와 데이터 폴더를 둘 다** 바꾼다. 예: `MINIDISCORD_PORT=3123 MINIDISCORD_DATA_DIR=testplace/data2`. 2단계의 `MINIDISCORD_URL` 과 `MINIDISCORD_DB` 도 그에 맞춘다. 나머지 순서는 같다.
+### 시험할 때는 창구 없이 돌린다
+하네스만 시험할 때는 채팅 서버를 아예 띄우지 않는다 (`prodev/docs/launch.md` 11절). `setup.js --project` 는 서버 없이도 돌고, 봇은 `claude --setting-sources project,local` 로 켠다 — 검수 세션(meta)이 사람 역할로 말을 건넨다. 이때 **`MINIDISCORD_DB` 를 없는 경로로** 준다. 안 주면 살아 있는 채팅 DB 를 기본값으로 잡는다. 검수 판은 prodev 를 `git archive` 로 뜬 **사본**에서 돌려 형제 봇 폴더를 못 보게 한다.
+
+창구까지 시험할 때만 서버를 따로 띄운다 — 살아 있는 방을 건드리지 않으려고 **포트와 데이터 폴더를 둘 다** 바꾼다. 예: `MINIDISCORD_PORT=3123 MINIDISCORD_DATA_DIR=testplace/data2`. 2단계의 `MINIDISCORD_URL` 과 `MINIDISCORD_DB` 도 그에 맞춘다. 채널이 있어야만 재는 것 셋(분량 검사 · 카드 확정 관문 · 발송 결재)이 이 판의 몫이다.
