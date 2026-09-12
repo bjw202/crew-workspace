@@ -171,6 +171,10 @@ sh bootstrap.sh             # workspace.json 을 읽어 prodev · minidiscord ·
 
 ### 켜는 순서 — 터미널 셋
 
+> **윈도우라면** 아래 명령의 **꼴만** 다르다 (환경변수 주는 문법과 경로). 값과 순서는 같다.
+> PowerShell · Git Bash 꼴을 나란히 둔 표가 [`WINDOWS.md`](./WINDOWS.md) 6절에 있다 —
+> 거기 것을 그대로 붙이면 된다. 여기 명령을 PowerShell 에 치면 `VAR=값 …` 이 안 먹는다.
+
 **1. 채팅 서버** (`minidiscord/` 에서)
 ```bash
 cd minidiscord
