@@ -386,11 +386,27 @@ claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.jso
        --dangerously-load-development-channels server:minidiscord-channel
 ```
 ```powershell
-# 윈도우 PowerShell — 줄 잇는 문자가 백틱
+# 윈도우 PowerShell — 한 줄로 붙인다 (아래 상자를 읽을 것)
 cd C:\…\crew-workspace\prodev\bots\prodev-수율개선-bot
-claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.json `
-       --dangerously-load-development-channels server:minidiscord-channel
+claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.json --dangerously-load-development-channels server:minidiscord-channel
 ```
+
+> **PowerShell 에서는 이 명령을 한 줄로 둔다.** 줄 잇는 문자(백틱 `` ` ``)로 끊어 적으면
+> **붙여넣기에서 깨진다** — 백틱은 줄의 **맨 끝**이어야 하는데, 문서에서 복사하면 뒤에 공백이
+> 하나 붙거나 콘솔이 두 줄을 따로 받아 이어쓰기가 풀린다. 그러면 `--mcp-config` 의 값이
+> 명령 자리로 떨어져 **PowerShell 이 `.mcp.json` 을 «파일 열기» 로 처리한다** (연결된 프로그램이 뜬다).
+> 2026-09-13 에 실제로 그렇게 걸렸다. 한 줄이면 안 생긴다.
+>
+> 길어서 거슬리면 배열로 나눈다 — 이 꼴은 붙여넣기에 안 깨진다:
+> ```powershell
+> $args = @(
+>   '--setting-sources', 'project,local'
+>   '--strict-mcp-config', '--mcp-config', '.mcp.json'
+>   '--dangerously-load-development-channels', 'server:minidiscord-channel'
+> )
+> claude @args
+> ```
+> bash 쪽 `\` 는 붙여넣기에서 안 깨지므로 위 bash 칸은 여러 줄로 둔다.
 
 **이 창은 사람이 직접 켠 대화형 창이어야 한다.** 파이프로 넘기거나 스크립트로 띄우면
 Claude Code 가 `--print` 로 떨어져, 채널이 방의 글을 세션에 밀어 넣지 못한다 — 봇이 뜨긴 하는데
@@ -535,7 +551,7 @@ System32 인데 `npm test` 안에서는 mingw 이 잡혔다(npm 이 PATH 를 다
 | 무엇 | 왜 |
 |---|---|
 | **맥 회귀** | 옮긴 기계에 맥이 없었다. 코드를 읽어 posix 결과가 같음만 확인했다. 맥에서 시험 넷을 한 번 돌리는 것이 «두 환경 다 된다» 의 마지막 근거다 |
-| **봇이 방의 글에 스스로 깨어나는 것** | 채널이 세션에 글을 밀어 넣으려면 대화형 창(TTY)이 필요해 사람이 해야 한다. 채널을 지나 방에 답하고 첨부하는 경로 자체는 쟀다 |
+| ~~봇이 방의 글에 스스로 깨어나는 것~~ | **2026-09-13 에 사람이 창에서 켜 확인했다.** 채널이 붙고 방에서 부르면 봇이 깨어난다. 도구로는 잴 수 없던 자리다(TTY 가 필요해 `--print` 로 떨어진다) |
 | **Node 22 에서 `chat.js`** | 그 기계에 22 가 없었다. 24 에서만 확인 |
 | 심볼릭 링크 보안 경계 두 칸 | 윈도우가 개발자 모드 없이 `symlinkSync` 를 막는다. 한 칸은 링크 부분만 빼고 재고, 한 칸은 «건너뜀» 으로 남긴다 — 통과로 위장하지 않았다 |
 | 경로에 **공백** | 훅 명령에 따옴표가 없어 ② 가 다시 깨진다. `C:\project\…` 처럼 공백 없는 자리에 둔다 |
