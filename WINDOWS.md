@@ -40,7 +40,7 @@ WSL 2 는 여전히 **설정이 맥과 똑같아진다**는 이점이 있으니(
 | **봇의 손** | 봇에게 허용된 Bash 명령은 **열 건**(node · git · gh · python3 · mkdir · ls · date · echo · pwd · cd)이다. 2026-09-11 관문 A(ADR-033)에서 `grep` · `sed` · `find` 같은 유닉스 도구 스물하나를 뺐다 — `Grep` · `Glob` · `Read` 내장 도구가 덮는다. 그래도 `node` · `git` 은 셸로 부른다 | `prodev/common/settings.template.json` |
 | 봇 상태줄 | `common/statusline.sh` (첫 줄 `#!/bin/bash`) | `prodev/common/statusline.sh` |
 | meta 의 검수 도구 | `gate-tests.sh` · `replay.sh` · `weekly.sh` (전부 zsh) | `meta/prodev-review/scripts/tools/` |
-| 서버 켜는 명령 | `VAR=값 명령` 꼴 (PowerShell 문법이 아니다) | `README.md` '봇을 돌리는 법' |
+| 서버 켜는 명령 | 맥 쪽 꼴이 `VAR=값 명령` 이다. **PowerShell 판은 `README.md` 에 나란히 있다** — 셸 없이도 서버·setup·봇은 켤 수 있다 | `README.md` '봇을 돌리는 법' |
 
 Claude Code 자체는 윈도우에서 Git for Windows 없이도 돈다. 다만 그때는 **Bash 도구 대신 PowerShell 도구**를
 쓰고, 위의 허용 목록 31건이 그 위에서는 맞지 않는다. 그래서 이 작업판에서는 셸이 선택이 아니다.
@@ -273,19 +273,14 @@ claude --version >/dev/null 2>&1 && echo "OK   claude" || echo "없음 claude  <
 
 ---
 
-## 6. 설정 대조표 — 맥과 윈도우는 **여기만 다르다**
+## 6. 설정 — **쓰는 법은 `README.md` 가 진실이다**
 
-**코드는 같다.** 위 5.1 이후로 플랫폼을 가르는 것은 «어떤 셸 문법으로 환경변수를 주는가» 뿐이다.
-아래 표의 값은 양쪽이 **같은 것을 가리켜야** 한다.
+맥·윈도우 명령을 나란히 둔 «무엇이 필요한가» 와 «켜는 순서 — 터미널 셋» 은
+[`README.md`](./README.md) 에 있다. **여기에 같은 것을 다시 적지 않는다** — 두 벌이 되면 갈리고,
+갈리면 어느 쪽이 맞는지 아무도 모른다.
 
-| 환경변수 | 무엇 | 맥·리눅스 | 윈도우 |
-|---|---|---|---|
-| `MINIDISCORD_PORT` | 서버 포트 | `3000` | `3000` |
-| `MINIDISCORD_DATA_DIR` | 채팅 DB · 업로드 자리 | `$PWD/data` | `C:/…/minidiscord/data` |
-| `MINIDISCORD_BOT_FILES_DIR` | 봇이 첨부할 수 있는 뿌리 = **과제 폴더들의 부모** | `$PWD/../projects` | `C:/…/projects` |
-| `MINIDISCORD_URL` | setup 이 부르는 서버 주소 | `http://127.0.0.1:3000` | 같다 |
-| `MINIDISCORD_DIR` | minidiscord 저장소 자리 | `$PWD/../minidiscord` | `C:/…/minidiscord` |
-| `MINIDISCORD_DB` | 채팅 DB 파일 | `…/minidiscord/data/minidiscord.db` | 같다 |
+한 줄로 요약하면: **코드는 같고, 환경변수를 주는 문법과 경로 꼴만 다르다.**
+`export VAR=값` ↔ `$env:VAR = "값"` · 줄 잇는 문자 `\` ↔ 백틱 `` ` `` · `/a/b` ↔ `C:/a/b`.
 
 > **경로는 슬래시(`/`)로 줘도 된다** — 노드와 윈도우 API 가 둘 다 받는다. 역슬래시를 쓰려면
 > PowerShell 에서는 그대로, **bash 안에서는 두 번**(`C:\\…`) 써야 한다. 섞기 싫으면 슬래시만 쓴다.
@@ -293,19 +288,12 @@ claude --version >/dev/null 2>&1 && echo "OK   claude" || echo "없음 claude  <
 > 드라이브 문자 대소문자는 이제 **상관없다** (5.1 의 7 을 고쳤다). 그래도 큰 `C:` 로 적기를 권한다 —
 > 눈으로 대조할 때 한 꼴이 편하다.
 
-### 6.1 환경변수 주는 문법
+아래 6.1 은 **윈도우에만 있는 자리**라 여기 남긴다.
 
-| | 맥·리눅스 (bash · zsh) | 윈도우 (PowerShell) | 윈도우 (Git Bash) |
-|---|---|---|---|
-| 한 번 주고 명령 | `VAR=값 명령` | (한 줄로 못 한다 — 아래처럼 미리 정한다) | `VAR=값 명령` |
-| 창에 정해 두기 | `export VAR=값` | `$env:VAR = "값"` | `export VAR=값` |
-| 줄 잇기 | `\` | 백틱 `` ` `` | `\` |
-| 현재 폴더 | `$PWD` | `$PWD` 또는 `(Get-Location)` | `$PWD` |
+### 6.1 창마다 먼저 치는 PATH 한 줄 (사람 편의)
 
-### 6.2 윈도우: 창마다 먼저 치는 PATH 한 줄
-
-**`setup.js` 가 Git 의 유닉스 도구 자리를 스스로 찾아 넣으므로(5.1 의 3) 이제 필수가 아니다.**
-다만 **사람이** `ls`·`date`·`python3` 를 그 창에서 직접 치려면 있어야 편하다.
+**`setup.js` 가 Git 의 유닉스 도구 자리를 스스로 찾아 봇 PATH 에 넣으므로(5.1 의 3) 봇에게는 필요 없다.**
+**사람이** 그 창에서 직접 `ls` · `date` · `python3` 를 치려면 있어야 편하다.
 
 PowerShell:
 ```powershell
@@ -320,82 +308,18 @@ g="/c/Program Files/Git"; py="$LOCALAPPDATA/Programs/Python/Python313"
 export PATH="$g/bin:$g/usr/bin:/c/Windows/System32:$g/mingw64/bin:/c/Program Files/nodejs:$py:$py/Scripts:$HOME/.local/bin:/c/Windows"
 ```
 
-순서에 뜻이 있다: `System32` 에도 `find.exe`·`sort.exe` 가 있는데 **전혀 다른 프로그램**이라
-Git 의 것이 먼저 와야 한다. `mingw64\bin` 은 `pdftotext` 때문에 뒤에 둔다.
+**순서에 뜻이 있다.** `System32` 에도 `find.exe` · `sort.exe` 가 있는데 **전혀 다른 프로그램**이라
+Git 의 것이 먼저 와야 한다. `mingw64\bin` 은 `pdftotext` 때문에 뒤에 둔다 —
+거기 있는 `curl.exe` 는 한글 인자를 cp949 로 떨어뜨리므로 **앞에 두면 안 된다**(5.3 의 ①).
+이 작업판은 이제 `curl` 을 부르지 않으니 봇에게는 상관없고, 사람이 손으로 칠 때만 해당한다.
 
-### 6.3 켜는 순서 — 터미널 셋
-
-`README.md` 의 '봇을 돌리는 법' 과 같은 순서다. 명령 꼴만 다르다.
-
-**① 채팅 서버 (이 창은 켜 둔다)**
-
+잡히는 자리 확인:
 ```powershell
-# 윈도우 · PowerShell
-cd C:\…\minidiscord
-npm install                       # 첫 번째만. Python + C++ 도구가 있어야 한다 (5.2)
-npm run build -w channel          # channel\dist\index.js 가 생겨야 한다
-$env:MINIDISCORD_PORT = "3000"
-$env:MINIDISCORD_DATA_DIR = "C:/…/minidiscord/data"
-$env:MINIDISCORD_BOT_FILES_DIR = "C:/…/projects"
-npx tsx server/src/index.ts
+"bash","curl","node","python3","git","claude","pdftotext" | ForEach-Object {
+  "{0,-10} {1}" -f $_, (Get-Command $_ -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+}
 ```
-```bash
-# 맥·리눅스
-cd minidiscord && npm install && npm run build -w channel
-MINIDISCORD_PORT=3000 MINIDISCORD_DATA_DIR=$PWD/data \
-MINIDISCORD_BOT_FILES_DIR=$PWD/../projects npx tsx server/src/index.ts
-```
-
-확인: 다른 창에서 `curl -sS http://127.0.0.1:3000/api/health` → `{"ok":true}`
-(PowerShell 이면 `Invoke-RestMethod http://127.0.0.1:3000/api/health` → `ok : True`)
-
-**② 과제 폴더 · 봇 설정 · 방 둘 (과제 하나에 한 번)**
-
-```powershell
-# 윈도우 · PowerShell
-cd C:\…\prodev
-$env:MINIDISCORD_URL = "http://127.0.0.1:3000"
-$env:MINIDISCORD_DIR = "C:/…/minidiscord"
-$env:MINIDISCORD_DB  = "C:/…/minidiscord/data/minidiscord.db"
-$env:MINIDISCORD_BOT_FILES_DIR = "C:/…/projects"
-node scripts/setup.js --project 수율개선
-node scripts/setup.js rooms 수율개선
-```
-```bash
-# 맥·리눅스
-cd prodev
-export MINIDISCORD_URL=http://127.0.0.1:3000 \
-       MINIDISCORD_DIR=$PWD/../minidiscord \
-       MINIDISCORD_DB=$PWD/../minidiscord/data/minidiscord.db \
-       MINIDISCORD_BOT_FILES_DIR=$PWD/../projects
-node scripts/setup.js --project 수율개선
-node scripts/setup.js rooms 수율개선
-```
-
-**서버가 켜져 있어야** 봇 등록과 토큰(`.env`)까지 된다. 꺼진 채 돌리면 폴더·설정만 만들고
-"서버 없음, 건너뜀" 이라 말한다. 서버를 켜고 같은 명령을 다시 돌리면 그때 받는다 (다시 돌려도 안전하다).
-
-setup 의 `④ 환경 점검` 에서 **"명령 15개 모두 풀림"** 이 나와야 한다. 하나라도 못 찾으면 그 줄이 말해 준다.
-
-**③ 봇 세션 (과제마다 하나 · 이 창은 켜 둔다)**
-
-```powershell
-# 윈도우 · PowerShell — 줄 잇는 문자가 백틱이다
-cd C:\…\prodev\bots\prodev-수율개선-bot
-claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.json `
-       --dangerously-load-development-channels server:minidiscord-channel
-```
-```bash
-# 맥·리눅스
-cd prodev/bots/prodev-수율개선-bot
-claude --setting-sources project,local --strict-mcp-config --mcp-config .mcp.json \
-       --dangerously-load-development-channels server:minidiscord-channel
-```
-
-**이 창은 대화형이어야 한다** (TTY). 파이프로 넘기면 Claude Code 가 `--print` 로 떨어져
-채널이 방의 글을 세션에 밀어 넣지 못한다.
-
----
+`bash` 가 `Git\bin`, `curl` 이 `System32` 여야 한다.
 
 ## 7. 확인표 — 여기까지 쳐야 «세운 것» 이다
 
@@ -455,7 +379,7 @@ printf '%s' '{"source":"startup"}' | bash -c "$(node -e "console.log(JSON.parse(
 
 | 무엇 | 왜 |
 |---|---|
-| **봇이 방의 글에 스스로 깨어나는 것** | 채널이 글을 세션에 밀어 넣으려면 **대화형 창(TTY)** 이 필요하다. 도구로 띄우면 `--print` 로 떨어진다. 6.3 ③ 을 사람이 창에서 한 번 켜 확인한다. 채널을 지나 방에 답하고 첨부하는 경로 자체는 `reply`·`fetch_history` 로 재 두었다 (확인표 17 · 20) |
+| **봇이 방의 글에 스스로 깨어나는 것** | 채널이 글을 세션에 밀어 넣으려면 **대화형 창(TTY)** 이 필요하다. 도구로 띄우면 `--print` 로 떨어진다. `README.md` '켜는 순서' ③ 을 사람이 창에서 한 번 켜 확인한다. 채널을 지나 방에 답하고 첨부하는 경로 자체는 `reply`·`fetch_history` 로 재 두었다 (확인표 17 · 20) |
 | **심볼릭 링크 보안 경계 두 칸** | 윈도우는 개발자 모드나 관리자 권한 없이 `symlinkSync` 가 `EPERM` 이다. AC-019 는 링크 칸만 빼고 나머지 넷을 그대로 재고, 링크가 전부인 AC-GW-023 은 «건너뜀» 으로 남는다 — 통과로 위장하지 않는다. **설정 → 개인 정보 및 보안 → 개발자용 → 개발자 모드**를 켜면 윈도우에서도 돈다 |
 | **`zsh` 도구 셋** (`gate-tests.sh` · `replay.sh` · `weekly.sh`) | 윈도우에 zsh 이 없다. node 도구(`evo-count.js` · `cost.js`)는 돈다. 7.2 처럼 손으로 대신하거나, zsh 을 깔거나, node 로 옮긴다 (옮기는 것이 옳은 방향이다) |
 | **`crontab`** | 없다. **상관없다** — 자동 브리핑을 두지 않기로 했다 (2026-09-11 결정). `brief`·`journal` 은 사람이 말을 걸 때 뜬다 |
@@ -492,6 +416,7 @@ printf '%s' '{"source":"startup"}' | bash -c "$(node -e "console.log(JSON.parse(
 
 ## 10. 이 문서가 손대지 않은 것
 
-- **`prodev/docs/launch.md` 와 `README.md` 의 켜는 순서** — 6.3 이 윈도우 꼴을 들고 있다.
-  두 문서에 같은 것을 또 적으면 갈린다. `README.md` 는 6.3 을 가리키기만 한다.
+- **`README.md` 의 켜는 순서** — 2026-09-13 에 **거기가 맥·윈도우 명령을 나란히 들도록** 바꿨고,
+  이 문서의 6절은 그쪽을 가리키기만 한다. 두 문서에 같은 명령을 두 벌 두면 반드시 갈린다.
+- **`prodev/docs/launch.md`** — 윈도우 줄을 넣지 않았다. 넣는다면 `README.md` 를 가리키는 한 줄이어야 한다.
 - **`meta` 의 zsh 도구 셋** — node 로 옮기는 것이 옳은데 그것은 포팅이 아니라 도구 다시 쓰기다 (8절).
