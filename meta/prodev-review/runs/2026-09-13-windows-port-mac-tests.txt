@@ -1,0 +1,70 @@
+# 윈도우 포팅 PR 맥 회귀 실측 — 2026-09-13T11:32:21Z · node v24.12.0 · macOS 26.5.2
+# 대본: GitHub 에서 새로 clone → npm ci → 시험. 로그에서 grep 한 줄만 옮김
+v24.12.0
+11.6.2
+26.5.2
+################ minidiscord main
+dfa33c3 docs(SPEC-WEBATTACH-001): 사람 관측 기록 — HO-2 관측, HO-1 macOS 절반
+install exit 0
+npm test exit 0
+e2e exit 0
+e2e:scenario exit 0
+################ prodev main
+df2373a Merge pull request #14 from bjw202/test/fixture-scrub
+install exit 0
+npm test exit 0
+test:server exit 0
+################ minidiscord windows-port
+e42dc12 test(win): 윈도우에서 붉어지던 열두 칸 — 핸들 · 뒷정리 순서 · 절대경로 · 링크 권한 · PRESERVE 기준선
+install exit 0
+npm test exit 0
+e2e exit 0
+e2e:scenario exit 0
+################ prodev windows-port
+1b98b53 fix: 마지막 일지의 '며칠 전' 을 로컬 달력으로 센다 (자정~오전 9시에 하루 어긋났다)
+install exit 0
+npm test exit 0
+test:server exit 0
+DONE
+
+[exited with code 0]
+## md-main-test
+      Tests  298 passed (298)
+      Tests  103 passed (103)
+## md-main-e2e
+E2E PASS — 15 단계 전부 통과 (봇 하나 · 방 둘)
+## md-main-scn
+E2E-SCENARIO PASS — 20 단계 전부 통과 (봇 둘 · 방 둘 · 관측자 하나)
+## pd-main-test
+ℹ tests 133
+ℹ pass 133
+ℹ fail 0
+ℹ skipped 0
+## pd-main-server
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+ℹ skipped 0
+## pd-main hooks.test.js 시간대 둘
+TZ=Asia/Seoul: ℹ pass 41 ℹ fail 0 
+TZ=Pacific/Kiritimati: ℹ pass 40 ℹ fail 1   2026-09-13 (0일 전) · 일지 1개 
+## md-windows-port-test
+      Tests  298 passed (298)
+      Tests  103 passed (103)
+## md-windows-port-e2e
+E2E PASS — 15 단계 전부 통과 (봇 하나 · 방 둘)
+## md-windows-port-scn
+E2E-SCENARIO PASS — 20 단계 전부 통과 (봇 둘 · 방 둘 · 관측자 하나)
+## pd-windows-port-test
+ℹ tests 133
+ℹ pass 133
+ℹ fail 0
+ℹ skipped 0
+## pd-windows-port-server
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+ℹ skipped 0
+## pd-windows-port hooks.test.js 시간대 둘
+TZ=Asia/Seoul: ℹ pass 41 ℹ fail 0 
+TZ=Pacific/Kiritimati: ℹ pass 41 ℹ fail 0 
