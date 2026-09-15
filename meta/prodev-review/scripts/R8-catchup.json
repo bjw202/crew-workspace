@@ -1,0 +1,82 @@
+{
+  "name": "R8-catchup (v2 사람끼리 · 따라잡기)",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-bot",
+  "설명": "v2 규칙(ADR-018 · 020) 시험. 과제원과 PL 이 봉투 없이 이야기하고(봇에게 안 가야 한다) 파일을 봉투 없이 올린 뒤, PL 이 봇을 불러 '위 내용 · 위 파일' 로 진행을 청한다. 봇은 fetch_history 로 사람끼리 글과 첨부 경로를 끌어와 들이기를 시작해야 한다. 끝에 사람끼리 한 이야기의 요약을 청한다. 2026-09-14 meta 가 씀 (M5.M 전).",
+  "steps": [
+    {
+      "id": "s1",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "text": "피엘님, 구매팀이 8월 입고 성적서를 다시 보냈어요. 이번 판은 supplier 칸이 채워져 있대요."
+    },
+    {
+      "id": "s2",
+      "room": "본방",
+      "author": "PL",
+      "wait": "none",
+      "text": "그래? SH-2200 두 건이 여전히 규격 초과인지가 관건이야. 단위는 µm 로 맞춰서 보자."
+    },
+    {
+      "id": "s3",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "text": "네. 그리고 GV-80 한 건은 공급사가 재측정하겠다고 해서 이번 판에서는 보류로 두면 될 것 같아요."
+    },
+    {
+      "id": "s4",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "attach": [
+        "data/part_incoming_inspection.csv"
+      ],
+      "text": "성적서 올립니다. 34행이에요."
+    },
+    {
+      "id": "s5",
+      "room": "본방",
+      "author": "PL",
+      "wait": "none",
+      "text": "고마워. 잠깐 회의 다녀와서 볼게."
+    },
+    {
+      "id": "s6",
+      "sleep_s": 45
+    },
+    {
+      "id": "s7",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-bot) 위에 김과제가 올린 성적서 봤지? 우리가 나눈 얘기(SH-2200 규격 초과 · µm 통일 · GV-80 보류)를 반영해서 들이기 진행해 줘."
+    },
+    {
+      "id": "s8",
+      "room": "본방",
+      "author": "member",
+      "wait": "none",
+      "text": "감사합니다. 저는 내일 오전에 확정할게요."
+    },
+    {
+      "id": "s9",
+      "sleep_s": 60
+    },
+    {
+      "id": "s10",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "timeout_s": 180,
+      "text": "@TO(prodev-worktogether-bot) 오늘 우리끼리 나눈 이야기를 세 줄로 정리해 줘. 네가 부른 글 말고 사람끼리 한 말만."
+    }
+  ],
+  "v2b": "2026-09-15 meta: 봇 이름을 v2 방 만들기(setup.js)가 만드는 prodev-worktogether-bot 으로 바꿈 (3곳). 옛 이름 prodev-worktogether-비서 는 v1 대본에만."
+}

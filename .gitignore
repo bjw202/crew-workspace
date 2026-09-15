@@ -3,6 +3,7 @@
 /minidiscord/
 /crew/
 /knowledge/
+/cockpit/
 
 # 회사 자료 — 폴더는 저장소에 두고(.gitkeep) 안의 과제들은 올리지 않는다
 /projects/*

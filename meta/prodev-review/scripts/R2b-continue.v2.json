@@ -1,0 +1,33 @@
+{
+  "name": "R2b-continue (v2 방 하나)",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-bot",
+  "설명": "R2 가 확정(#19)에서 훅 결함(봉투 앞 확정 어휘)으로 멈춘 뒤, 훅을 고치고 확정 걸음부터 이어 돌리는 판 (2026-09-10). 채점은 R2.jsonl + 이 기록을 합쳐 본다.",
+  "steps": [
+    {
+      "id": "s4a2",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-bot) 확정"
+    },
+    {
+      "id": "s5",
+      "sleep_s": 60
+    },
+    {
+      "id": "s6b",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "timeout_s": 300,
+      "text": "@TO(prodev-worktogether-bot) 이제 카드 확정됐지? 카드 공지 글 번호 알려 줘."
+    }
+  ],
+  "v2": "2026-09-15 meta: 방 하나 판. 출처 R2b-continue.json(과제 worktogether), files → 본방 1건, 봇 이름 → prodev-worktogether-bot 3곳. 채점표 칸은 scoring.md 그대로, 방 조건만 \"같은 방\". (앞서 .w2 변형에서 만든 판은 과제 이름이 달라 버렸다)"
+}

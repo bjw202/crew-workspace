@@ -1,0 +1,96 @@
+{
+  "name": "R2-intake (v2 방 하나)",
+  "project": "worktogether",
+  "actors": {
+    "PL": "김피엘",
+    "member": "김과제"
+  },
+  "bot": "prodev-worktogether-bot",
+  "설명": "들이기. 회차 4 성적서 34행(함정 넷: 중복 행 SH2200-B-0412 · 날짜 2026/08/01 · 공급사 빈 칸 HC40-A-0773 · mm 둘). 과제원이 첫 답에서 중복 행을 '별개 부품' 이라 틀리게 답하고 다음 글에서 고친다. 확정 전 카드 공지 0, 확정 뒤 1 ([카드] 첫 줄, files 방).",
+  "steps": [
+    {
+      "id": "s1",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "timeout_s": 300,
+      "attach": [
+        "data/part_incoming_inspection.csv"
+      ],
+      "text": "@TO(prodev-worktogether-bot) 구매팀에서 받은 부품 입고 검사 성적서입니다. 7월~8월 34행이에요. 07-28 CH-3B 정비 때 들어간 샤워헤드가 여기 있을 겁니다.",
+      "expect": "\\?|물음|확인|맞|묻",
+      "then": [
+        {
+          "id": "s2a",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-bot) SH2200-B-0412 두 줄은 별개 부품이에요. 시리얼이 겹친 거고요. 날짜 슬래시 쓴 건 그냥 같은 날짜로 보시면 되고, HC40-A-0773 공급사는 AlphaParts 입니다."
+        },
+        {
+          "id": "s2b",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-bot) 아, 아까 틀렸어요. SH2200-B-0412 두 줄은 같은 부품이 두 번 적힌 겁니다. 중복이니 하나로 보세요. mm 로 적힌 둘은 µm 로 바꿔서 보시면 됩니다."
+        }
+      ],
+      "else": [
+        {
+          "id": "s2c",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-bot) 궁금한 거 있으면 물어보세요. 참고로 SH2200-B-0412 두 줄은 같은 부품이 두 번 적힌 중복이고, HC40-A-0773 공급사는 AlphaParts, mm 로 적힌 둘은 µm 로 바꿔 보시면 됩니다."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "room": "본방",
+      "author": "member",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-bot) 그럼 다시 정리한 거 보여 주세요.",
+      "expect": "확정",
+      "then": [
+        {
+          "id": "s4a",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "timeout_s": 300,
+          "text": "@TO(prodev-worktogether-bot) 확정"
+        }
+      ],
+      "else": [
+        {
+          "id": "s4b",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "text": "@TO(prodev-worktogether-bot) 맞아요. 이대로 확정해도 되나요?"
+        },
+        {
+          "id": "s4c",
+          "room": "본방",
+          "author": "member",
+          "wait": "bot",
+          "timeout_s": 300,
+          "text": "@TO(prodev-worktogether-bot) 확정"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "sleep_s": 60
+    },
+    {
+      "id": "s6",
+      "room": "본방",
+      "author": "PL",
+      "wait": "bot",
+      "text": "@TO(prodev-worktogether-bot) 김과제가 올린 성적서 카드 번호가 뭐지? 규격 넘은 부품이 몇 개였어?"
+    }
+  ],
+  "v2": "2026-09-15 meta: 방 하나 판. 출처 R2-intake.json(과제 worktogether), files → 본방 8건, 봇 이름 → prodev-worktogether-bot 10곳. 채점표 칸은 scoring.md 그대로, 방 조건만 \"같은 방\". (앞서 .w2 변형에서 만든 판은 과제 이름이 달라 버렸다)"
+}

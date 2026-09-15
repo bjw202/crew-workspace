@@ -1,0 +1,120 @@
+{
+ "permissions": {
+  "allow": [
+   "mcp__minidiscord-channel__reply",
+   "mcp__minidiscord-channel__fetch_history",
+   "Read",
+   "Agent",
+   "WebSearch",
+   "WebFetch",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate/**)",
+   "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate/**)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/bots/prodev-searchgate-bot/**)",
+   "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/bots/prodev-searchgate-bot/**)",
+   "Bash(git:*)",
+   "Bash(gh:*)",
+   "Bash(grep:*)",
+   "Bash(ls:*)",
+   "Bash(head:*)",
+   "Bash(tail:*)",
+   "Bash(wc:*)",
+   "Bash(mkdir:*)",
+   "Bash(cp:*)",
+   "Bash(cat:*)",
+   "Bash(sed:*)",
+   "Bash(diff:*)",
+   "Bash(find:*)",
+   "Bash(sort:*)",
+   "Bash(uniq:*)",
+   "Bash(awk:*)",
+   "Bash(date:*)",
+   "Bash(python3:*)",
+   "Bash(node:*)",
+   "Bash(chmod:*)",
+   "Bash(shasum:*)",
+   "Bash(sha256sum:*)",
+   "Bash(file:*)",
+   "Bash(stat:*)",
+   "Bash(pwd)",
+   "Bash(echo:*)",
+   "Bash(cd:*)",
+   "Bash(tr:*)",
+   "Bash(cut:*)",
+   "Bash(basename:*)",
+   "Bash(dirname:*)"
+  ],
+  "deny": [
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/bots/prodev-searchgate-bot/.claude/settings.json)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/bots/prodev-searchgate-bot/.env)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/bots/prodev-searchgate-bot/.mcp.json)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/common/hooks/**)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/scripts/**)",
+   "Write(//Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate/uploads/**)",
+   "Edit(//Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate/uploads/**)"
+  ],
+  "additionalDirectories": [
+   "/Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate",
+   "/Users/byunjungwon/Dev/my-project-04/crew-workspace/projects",
+   "/Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev"
+  ]
+ },
+ "env": {
+  "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+  "PATH": "/Applications/cmux.app/Contents/Resources/bin:/Users/byunjungwon/.local/bin:/opt/homebrew/bin:/Users/byunjungwon/.bun/bin:/Users/byunjungwon/.antigravity/antigravity/bin:/Users/byunjungwon/.nvm/versions/node/v24.12.0/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Orca.app/Contents/Resources/bin:/Users/byunjungwon/.cargo/bin:/Users/byunjungwon/Library/pnpm:/Users/byunjungwon/bin",
+  "PRODEV_BOT": "prodev-searchgate-bot",
+  "PRODEV_PROJECT": "/Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate",
+  "MINIDISCORD_DB": "/Users/byunjungwon/Dev/my-project-04/crew-workspace/projects/searchgate/.no-chat.db",
+  "MINIDISCORD_URL": "http://127.0.0.1:3000"
+ },
+ "statusLine": {
+  "type": "command",
+  "command": "/Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/common/statusline.sh"
+ },
+ "autoCompactEnabled": true,
+ "autoCompactWindow": 650000,
+ "hooks": {
+  "SessionStart": [
+   {
+    "matcher": "startup|resume|clear|compact",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "node /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/common/hooks/session-start.js"
+     }
+    ]
+   }
+  ],
+  "PreCompact": [
+   {
+    "matcher": "",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "node /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/common/hooks/pre-compact.js",
+      "timeout": 180
+     }
+    ]
+   }
+  ],
+  "PreToolUse": [
+   {
+    "matcher": "mcp__minidiscord-channel__reply",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "node /Users/byunjungwon/Dev/my-project-04/crew-workspace/prodev/common/hooks/pre-reply.js"
+     }
+    ]
+   },
+   {
+    "matcher": "mcp__minidiscord-channel__reply",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "sh -c \"cat > /private/tmp/claude-501/-Users-byunjungwon-Dev-my-project-04-crew-workspace-meta/fa3e8eb4-230e-4254-9ed7-aa95e8a312a5/scratchpad/pretooluse-marker.json\""
+     }
+    ]
+   }
+  ]
+ }
+}
