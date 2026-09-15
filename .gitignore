@@ -29,3 +29,6 @@ node_modules/
 
 # meta 안의 큰 원자료 (사람이 준 것. 올릴지 따로 정한다)
 /meta/user-notes/
+
+# 옛 판 산출물 묶음 (과제 자료 · 봇 기록이 들어 있어 올리지 않는다)
+/meta/prodev-review/archive/

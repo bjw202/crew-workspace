@@ -4,7 +4,7 @@
 #           윈도우는 Git Bash 나 WSL 에서 같은 명령. PowerShell · CMD 에서는 돌지 않는다.
 #           PowerShell 판을 따로 두지 않는 이유: 이 작업판은 여기 말고도 셸 도구(grep · sed · python3 …)를
 #           전제로 한다 — 봇 허용 목록 · statusline · meta 도구가 전부 그렇다. 윈도우는 Git Bash 나 WSL
-#           하나를 깔면 전부 풀린다 (README '무엇이 필요한가').
+#           하나를 깔면 전부 풀린다 (README 8.1절 '켜는 법').
 set -eu
 cd "$(dirname "$0")"
 node -e '
@@ -22,4 +22,4 @@ for (const [name, r] of Object.entries(j.repos)) console.log(name, r.url, r.comm
   echo "[$name] $commit 로 맞춤 (작업하려면: git -C $name checkout main)"
 done
 mkdir -p projects
-echo "끝. 다음은 README '봇을 돌리는 법'."
+echo "끝. 다음은 README 8.1절 '켜는 법'."

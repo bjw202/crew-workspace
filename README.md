@@ -73,7 +73,7 @@
 
 ## 1. 한눈에
 
-**이야기 하나로 먼저 본다.** 연구원 김과제가 방 `prodev-수율개선` 에 어제 라인 3 실험 파일을 올리고 `@TO(prodev-수율개선-bot) 어제 자료 봐 줘` 라고 쓴다. 봇은 파일을 inbox 에 잠가 두고, 무엇을 읽었는지 표로 보여 준 뒤 "E-0001 로 만들겠습니다. 맞으면 '확정'" 이라고 묻는다. 김과제가 "확정" 이라고 답하면 봇은 카드 `cards/E-0001.md` 를 확정하고 방에 알린다(5.1절). 한 달 뒤 PL 이 "B 로트 수율 어디 있었지?" 라고 물으면, 봇은 색인부터 대화까지 차례로 뒤져 출처와 함께 답한다(5.2절). 두 주쯤 지나 PL 이 "회고하자" 고 하면, 봇은 일지를 읽고 되풀이된 지적을 규칙 후보로 내민다. PL 이 "앞으로 그렇게 해" 라고 하면 그 규칙이 과제 폴더에 굳는다(6절).
+**이야기 하나로 먼저 본다.** 연구원 김과제가 방 `prodev-수율개선` 에 어제 라인 3 실험 파일을 올리고 `@TO(prodev-수율개선-bot) 어제 자료 봐 줘` 라고 쓴다. 봇은 파일을 inbox 에 잠가 두고, 무엇을 읽었는지 표로 보여 준 뒤 "E-0001 로 만들겠습니다. 맞으면 '확정'" 이라고 묻는다. 김과제가 "확정" 이라고 답하면 봇은 카드 `cards/E-0001.md` 를 확정하고 방에 알린다(5절). 한 달 뒤 PL 이 "B 로트 수율 어디 있었지?" 라고 물으면, 봇은 색인부터 대화까지 차례로 뒤져 출처와 함께 답한다(5절). 두 주쯤 지나 PL 이 "회고하자" 고 하면, 봇은 일지를 읽고 되풀이된 지적을 규칙 후보로 내민다. PL 이 "앞으로 그렇게 해" 라고 하면 그 규칙이 과제 폴더에 굳는다(6절).
 
 이 이야기 뒤의 짜임은 이렇다. 사람은 브라우저로 **cockpit** 에 들어간다. cockpit 서버는 과제마다 봇 하나를 대신 켜 두고 끄지 않은 채 들고 있으면서, 사람 글을 넣어 주고 봇의 답을 방에 옮긴다. 봇이 **어떻게 일하는지**는 **prodev** 가 정한다. 봇의 기억은 대화가 아니라 **과제 폴더의 파일**에 남는다. **meta** 는 봇이 잘하는지를, 만든 쪽이 아닌 자리에서 직접 시험해 센다. 저장소마다 git 을 어떻게 두는지는 8.2절에 있다.
 
@@ -87,9 +87,32 @@
 | `knowledge/` | 회사 지식 색인. 과제가 끝나면 쓸 만한 것이 올라온다 |
 | `projects/` | 과제 폴더들. 과제 하나 = 폴더 하나 = git 하나 (ADR-003). 회사 자료라 이 저장소에 올리지 않는다 |
 
+이 그림은 저장소 일곱이 서로 무엇을 주고받고, 이 저장소가 어느 것을 핀으로 가리키는지 보여 준다.
+
+```mermaid
+flowchart TB
+    P["사람 · 브라우저"] -->|"글 · 첨부 · 승인"| CK["cockpit<br/>웹 화면 · 세션 서버"]
+    CK -->|"방 만들 때 setup.js · 봇 켜기"| PD["prodev<br/>지침 · 스킬 · 훅 · bots/"]
+    PD -->|"봇이 읽고 씀"| PJ["projects/과제<br/>과제마다 자기 git"]
+    PJ -.->|"마감 때 지식 승격"| KN["knowledge<br/>회사 지식 색인"]
+    MD["minidiscord<br/>옛 창구 · 읽기만"] -.->|"화면을 물려줌"| CK
+    META["meta<br/>예측 · 시험 · 검수 기록"] -.->|"직접 돌려 잼"| PD
+    META -.->|"직접 돌려 잼"| CK
+    WS["crew-workspace 저장소<br/>workspace.json · bootstrap.sh"] -->|"직접 담음"| META
+    WS -->|"핀"| PD
+    WS -->|"핀"| CK
+    WS -->|"핀"| MD
+    WS -->|"핀"| CR["crew<br/>닫힌 실험 · 읽기만"]
+```
+
+읽는 법:
+- 실선 `사람 → cockpit → prodev → projects` 가 지금 판에서 일이 도는 길이다. 2절이 이 가운데 cockpit 과 prodev 사이를 넓혀 본다.
+- `crew-workspace 저장소` 에서 나가는 "핀" 선 넷이 `bootstrap.sh` 가 받아 오는 저장소다(8.2절). knowledge · projects 에는 핀이 없다.
+- 점선은 일이 도는 길이 아니라 재기 · 물려받기 · 마감 때만 쓰는 길이다. minidiscord 와 crew 는 읽기만 한다.
+
 ## 2. cockpit 과 prodev 의 관계
 
-여기 경로와 폴더 모습은 **새 판(v2) 설치 기준**이다. 이 작업판에 실제로 있는 `prodev/bots/` 네 폴더는 옛 판 것이다(11절 10번).
+여기 경로와 폴더 모습은 **새 판(v2) 설치 기준**이다. 이 작업판에 있던 옛 판 봇 폴더 넷(`prodev/bots/`)과 과제 폴더 넷(`projects/`)은 2026-09-15 에 묶어 두고 지웠다(`meta/prodev-review/archive/`, 봇 토큰 `.env` 는 빼고 묶었고 git 에는 올리지 않는다). v2 모습의 실물은 시험 설치본 `~/cockpit-try-v2` 에 있다.
 
 한 줄로: **cockpit 은 창구이자 세션을 켜 두는 손, prodev 는 봇의 머리와 규칙이다.** cockpit 은 봇에게 세 가지만 준다.
 - **켜지는 폴더(cwd):** 봇 폴더 `prodev/bots/prodev-수율개선-bot`.
@@ -225,6 +248,7 @@ sequenceDiagram
 
 읽는 법:
 - 서버가 CLI 에 넘기는 것은 `query()` 옵션 하나다. 그 뒤 `C->>BF` 와 `C->>R` 두 줄은 **서버가 아니라 CLI 가** 읽는 길이다.
+- `init 사건` 은 세션을 켤 때 SDK 가 처음 보내는 준비 알림이다. 붙은 명령 · 도우미 목록이 들어 있고, cockpit 은 그중 명령 수와 도우미 이름을 `session_events` 에 한 줄로 적는다 (`cockpit/src/session/manager.js:237-244`).
 - 켤 때마다 `session-start.js` 훅이 기억을 파일에서 되살린다(7절). 그래서 세션이 새로 떠도 과제를 잊지 않는다.
 
 결론: 서버는 "어느 폴더에서 · 어느 설정만 읽고 · 앞 대화에 이어서" 켜라고만 넘긴다. 동시에 켤 수 있는 봇은 기본 셋이다 (`cockpit/src/config.js:10-18`).
@@ -243,7 +267,7 @@ sequenceDiagram
 | `persistSession` | `true` | 대화 기록을 남겨 resume 할 수 있게 한다 |
 | `includePartialMessages` | `true` | 답을 다 쓰기 전에 조각조각 실시간으로 받는다 |
 | `enableFileCheckpointing` | `true` | 파일을 고치기 전에 되돌릴 자리를 저장한다 |
-| `env` | 허락된 15개 + `PRODEV_BOT_DIR` | 서버의 환경변수 가운데 고른 것만 넘긴다 (`env.js:7-22`) |
+| `env` | 허락된 15개 + 설정 `extraEnvKeys` + `PRODEV_BOT_DIR` | 서버의 환경변수 가운데 고른 것만 넘긴다. `extraEnvKeys` 는 `cockpit.json` 에 더 넘길 이름을 적는 칸이다 (`env.js:7-21` · `manager.js:224`) |
 | `systemPrompt` | Claude Code 기본 + cockpit 지시문 | 기본 지침 뒤에 cockpit 의 지시를 덧붙인다 |
 | `resume` | 저장된 `session_id` | 있으면 앞 대화에 이어 붙인다 |
 | `pathToClaudeCodeExecutable` | 설정의 `claudePath` | 있으면 그 실행 파일을 쓴다(윈도우는 필수) |
@@ -290,169 +314,35 @@ flowchart TB
 
 </details>
 
-**스킬 열다섯** (각 `prodev/.claude/skills/<이름>/SKILL.md:3`)
+**스킬 열다섯이 무엇을 하는지, 말 한마디가 어느 스킬로 가는지(분기표)** 는 [prodev README](prodev/README.md) 의 "워크플로우 ① 말 한마디가 들어오면" 과 "스킬 열다섯" 에 있다.
+여기서 알아 둘 맞물림은 하나다. 분기표가 받는 글은 cockpit 이 봉투를 씌워 넣어 준 글이다. `<channel source="cockpit" … delivery="to|cc" …>` 한 덩이에 본문과 첨부의 절대 경로가 들어 있고, `to` 글에만 "reply 로 답하라" 줄이 붙는다 (`cockpit/src/envelope/wrap.js:49-52` · `:62-68`).
 
-| 스킬 | 하는 일 |
-|---|---|
-| `prodev-orchestrator` | `@TO` 글이 오면 어느 스킬로 갈지 고르는 분기표. 놓친 앞 글을 끌어와 읽는 따라잡기도 |
-| `charter` | 발의(과제를 새로 여는 일): 헌장 · 일정 뼈대 |
-| `intake` | 첨부된 실험 자료를 읽고 표 → 문답 → 카드 |
-| `find` | 과제 안 물음에 출처를 붙여 답한다. `find.js` 필수 |
-| `research` | 바깥 조사. 먼저 find, 사람 허락 뒤 조사, 열 줄 브리핑 |
-| `analysis` | 통계 · 코드 분석. `analysis/<날짜>-<이름>/` 에 `run.py` 와 정해진 칸 여섯의 `run.md`, 카드 하나 |
-| `schedule` | `schedule.md` 등록 · 변경 · 브리핑 |
-| `brief` | 오늘 현황 열 줄 |
-| `journal` | 하루 마감 일지 |
-| `retro` | 일지와 `find.log` 를 읽고 굳힐 후보를 제안 (6절) |
-| `patent` | 청구 후보(특허로 주장할 거리) · 선행 조사(비슷한 특허가 이미 있나) · 전략 |
-| `paper` | 논문 골격 → 절 초안 |
-| `report` | 주간 · 월간 · 경영진 보고를 양식 칸에 채움 |
-| `review` | 결재 전 다른 문맥에서 검토. 통과 · 불통과 · 검증 불가 |
-| `close` | 마감: 방 보관 청하기 · 지식 승격(쓸 만한 것을 `knowledge/` 로 올리기) · 헌장 닫기 |
+## 5. 봇이 만든 것은 어디에 떨어지나
 
-**분기표가 고르는 법** (`prodev/.claude/skills/prodev-orchestrator/SKILL.md:8-27`). 위에서부터 보고, **먼저 걸린 줄에서 멈춘다.**
+cockpit 과 prodev 가 맞물리는 자리만 적는다. 들이기 차례 · 확정 조건 다섯은 [prodev README](prodev/README.md) 의 "워크플로우 ② 실험 자료 들이기" 와 "워크플로우 ⑤ 기계가 막는 자리", 찾기 여섯 층은 "워크플로우 ③" 에 있다. 카드에 무엇을 담나는 prodev README "카드 한 장에는 무엇이 들어가나", 카드 머리말 칸 목록은 `prodev/design/v3/ARCHITECTURE.md:122-140` 에 있다.
 
-| 차례 | 이런 글이면 | 가는 곳 |
-|---|---|---|
-| 1 | 따라잡기 말 ("위 파일 봐 줘", 부른 글에 첨부 없음) | 따라잡는 길 (7절) |
-| 2 | "앞으로 · 다음부터" | 굳는 길 (6절) |
-| 3 | `@TO` 글에 **첨부가 함께 오고** 시키는 말 (채워 줘 · 써 줘) | report · paper · patent |
-| 4 | `@TO` 글에 실험 자료 첨부 | intake |
-| 5 | **첨부 없이** 시키는 말 (특허 · 논문 · 보고) | patent · paper · report |
-| 6 | 바깥을 알아봐 달라는 말 | research |
-| 7 | 분석해 달라는 말 (유의 · 검정 · 회귀 …) | analysis |
-| 8 | 물음 (물음표 · 어디 · 언제 · 얼마 …) | find |
-| 9 이후 | 발의 · 일지 · 회고 · 현황 · 일정 · 마감 · 결재 직전 | charter · journal · retro · brief · schedule · close · review |
-| 끝 | 어디에도 안 걸림 | 사람에게 되묻는다 |
+원칙은 둘이다. **원본은 바꾸지 않는다.** **사람이 "확정" 이라고 답해야 카드가 확정된다** (ADR-008).
 
-예: "B 로트가 유의하게 낮나?" 는 물음표가 있어도 7번 analysis 가 8번 find 보다 앞이라 분석으로 간다.
+| 무엇 | 떨어지는 자리 | 누가 쓰나 | 근거 |
+|---|---|---|---|
+| 들인 원본 | 과제 폴더 `inbox/<날짜>-<주제>/`. 잠금(0444, 아무도 못 고침) · 파일 지문(SHA-256)은 옆의 `files.md` | 봇이 `intake-copy.js` 로 cockpit 업로드 폴더(2절 표)에서 복사 | `prodev/scripts/intake-copy.js:7` · `:11` · `:149` |
+| 카드 · 위키 · 색인 | 과제 폴더 `cards/` · `wiki/` · `index.md` · `index.json` | 봇. 색인은 `index.js` 가 만든다 | `prodev/scripts/index.js:2` |
+| 일지 · 규칙 · 양식 · 분석 | 과제 폴더 `journal/` · `house.md` · `templates/` · `analysis/` | 봇 | `prodev/scripts/setup.js:205-206` |
+| 열린 실 `threads/` | **엇갈린다.** 스킬은 봇 폴더, 켤 때 훅은 과제 폴더 (11절 4번) | 봇 | `intake/SKILL.md:73` · `session-start.js:105` |
+| 찾기 기록 `find.log` · 인수인계서 `handoff-compact.md` | **봇 폴더** | `find.js` · `pre-compact` 훅 | `find.js:275` · `pre-compact.js:9` |
 
-## 5. 자기 자료는 어떻게 정리되나
+맞물리는 자리 둘:
+- **확정 관문은 cockpit 의 `chat.db` 를 읽는다.** `pre-reply` 훅은 봇 설정의 환경변수 `MINIDISCORD_DB`(setup 이 `cockpit.json` 의 `dataDir` 로 채운다)가 가리키는 `chat.db` 를 읽기 전용으로 열어, 사람이 쓴 "확정" 글이 있는지 본다. 없으면 첫 줄이 `[카드]` 인 방 공지를 막는다 (`prodev/common/hooks/pre-reply.js:49` · `places.js:31` · `setup.js:15`). `cockpit.db` 는 봇 설정에서 읽기부터 막았다 (`setup.js:295-296`).
+- **첨부 경로는 cockpit 이 봉투에 적어 넣는다.** 봇은 그 절대 경로를 그대로 읽어 inbox 로 들인다 (`cockpit/src/envelope/wrap.js:62-68`). 봇은 업로드 폴더에 쓰지 못한다 (`setup.js:288-289`).
 
-원칙은 둘이다. **원본은 바꾸지 않는다.** **사람이 "확정" 이라고 답해야 카드가 확정된다.** 봇이 확정됐다고 우겨도, 방 공지와 커밋은 훅이 DB 에서 사람 글을 확인하고 막는다 (ADR-008).
+## 6. 굳은 규칙은 언제 다시 실리나
 
-### 5.1 들이기 — 첨부에서 카드까지
+회고(`retro`)가 무엇을 읽고 무엇을 제안하는지, "앞으로" 와 "이번에는" 을 어떻게 가르는지는 [prodev README](prodev/README.md) 의 "워크플로우 ⑦ 쓸수록 맞아 가는 법" 에 있다. 결정의 까닭은 ADR-031~037. 여기서는 cockpit 과 맞물리는 자리만 적는다.
 
-이 그림은 첨부 한 건이 inbox 에 잠기고, 번호 붙은 네 걸음을 지나 확정 카드와 방 공지가 되는 길을 보여 준다.
-
-```mermaid
-flowchart TB
-    A["사람 첨부 · @TO 글"] -->|"scripts/intake-copy.js"| B["inbox/날짜-주제/<br/>원본 0444 잠금 · files.md 에 SHA-256"]
-    B -->|"2000행 이상 또는 20쪽 이상"| D["data-reader 도우미<br/>reading.md"]
-    B --> T["① 표 · 문답 · 번호 받기 index.js<br/>한 글에 E-0001 로 만들겠습니다 맞으면 확정"]
-    D --> T
-    T --> P{"② 사람이 확정이라고 답했나"}
-    P -->|"아직"| W["카드는 draft 로 두고 기다림"]
-    P -->|"확정"| V["③ 카드 status valid · 위키 갱신 · index.js"]
-    V -->|"reply 첫 줄 [카드] E-0001 · ..."| I{"④ pre-reply 훅<br/>DB 에서 사람 확정 글을 조건 다섯으로 확인"}
-    I -->|"통과"| J["방에 카드 공지 · git commit"]
-    I -->|"막힘 exit 2"| K["공지 안 나감 · 카드는 valid 인 채 커밋 안 됨<br/>봇이 까닭을 받고 고침"]
-```
-
-읽는 법:
-- 맨 위에서 원본이 inbox 에 잠긴 뒤 ①~④ 번호대로 내려간다. 사람이 확정하지 않으면 카드는 draft 로 남고 봇은 기다린다 (`prodev/.claude/skills/intake/SKILL.md:71-74`).
-- 마름모 ④ 가 관문이다. 훅은 파일을 고치지 않고 `reply` 만 막는다. 모든 `reply` 직전에 방 번호 · 분량 · 색인 오류를 보고, 첫 줄이 `[카드]` 일 때만 확정 조건 다섯을 더 본다 (`prodev/common/hooks/pre-reply.js:38` · `:183-190`).
-
-풀어 둘 것:
-- **inbox 에 잠그기:** `0444` 는 아무도 못 고치게 잠근다는 뜻이다. SHA-256 은 파일 지문이라, 한 글자만 바뀌어도 값이 달라진다. 같은 이름 파일이 또 오면 `.v2` 를 붙여 둘째 판으로 둔다(이 문서의 "v2 판" 과는 다른 뜻). 지문은 사이드카 파일 `files.md` 에 적힌다 (`prodev/scripts/intake-copy.js:47-48` · `:149-150`).
-- **확정 전 카드는 draft 다** (`intake/SKILL.md:74`). "확정" 이 오면 `status: valid` → 위키 → `index.js` → 방에 카드 공지 → git commit 순서다 (`:78-85`).
-- **① 에서 번호와 청하는 말을 한 글에 두는 까닭:** 확정 조건 ④ 가 "사람 확정 바로 앞 봇 글" 에서 카드 번호를 찾기 때문이다 (`intake/SKILL.md:66-69`).
-
-**확정 조건 다섯** (`prodev/common/hooks/pre-reply.js:104-121`)
-1. 확정 글을 **사람**이 썼다.
-2. **같은 과제의 방**에서 썼다 (ADR-039).
-3. 봉투를 벗긴 본문이 `확정` · `맞다` · `맞습니다` · `그대로` · `OK` 로 시작한다.
-4. 자료가 올라온 글보다 뒤이고, **바로 앞 봇 글에 같은 카드 번호**가 있다.
-5. 카드 `status` 가 `valid` 다.
-
-**카드 머리말 예** — 파일 맨 위에 붙는 yaml 꼴 머리말이다(yaml = `이름: 값` 을 한 줄씩 적는, 사람이 읽기 쉬운 설정 글꼴). 값은 모양을 보이려고 지은 예다.
-
-```yaml
-id: E-0001               # 카드 번호
-kind: experiment         # 갈래
-title: 라인 3 B 로트 수율  # 제목
-room: prodev-수율개선      # 방
-source_msgs: [12]        # 자료가 올라온 글 번호
-status: draft            # 확정 전 draft, 확정 뒤 valid
-```
-
-나머지 칸(`confirmed_at` · `files` · `conditions` · `results` · `aliases` 등)은 `prodev/design/v3/ARCHITECTURE.md:122-140` 에 있다.
-
-**과제 폴더의 나머지 자리:** `wiki/` 는 카드를 주제별로 묶은 요약 쪽이다. `journal/` 은 일곱 칸(제목 일곱)짜리 일지다. `threads/` 는 "열린 실", 곧 사람 답을 기다리는 물음 메모다. `research/` 는 바깥 조사 결과다. 폴더는 setup 이 만든다 (`prodev/scripts/setup.js:205`).
-
-### 5.2 찾기 — 여섯 층, 먼저 걸리면 멈춘다
-
-이 그림은 물음 하나가 `find.js` 의 여섯 층을 차례로 내려가다 처음 걸린 층에서 답이 되고, 그 결과가 `find.log` 에 한 줄 남는 길을 보여 준다.
-
-```mermaid
-flowchart LR
-    Q["물음 · B 로트 수율 어디 있지"] --> L1["1 색인<br/>title · aliases · tags"]
-    L1 -->|"없음"| L2["2 카드 본문"]
-    L2 -->|"없음"| L3["3 위키"]
-    L3 -->|"없음"| L4["4 과제 문서<br/>charter · schedule"]
-    L4 -->|"없음"| L5["5 inbox<br/>files.md · 원본"]
-    L5 -->|"없음"| L6["6 대화 chat.db"]
-    L1 & L2 & L3 & L4 & L5 & L6 -->|"걸림"| ANS["출처를 붙인 답"]
-    L6 -->|"없음"| NONE["건수 0"]
-    ANS --> LOG["봇 폴더 find.log 한 줄"]
-    NONE --> LOG
-```
-
-읽는 법:
-- 왼쪽에서 오른쪽으로 내려간다. 과제 파일(색인 · 카드 · 위키 · 헌장 · inbox)을 다 본 뒤에야 대화를 본다 (ADR-016 · ADR-026).
-- `find.log` 는 **봇 폴더**에 쌓인다. 칸은 시각 · 층 · 층 이름 · 건수 · 맨 위 결과 · 물음이다 (`prodev/scripts/find.js:271-283` · `:303-314`). 건수 0 인 줄이 `retro` 의 "못 찾은 물음" 재료다.
-
-## 6. retro 로 스킬 · 규칙이 어떻게 진화하나
-
-**가상의 예부터.** PL 이 두 주 동안 "수율 표 단위는 % 로" 를 세 번 지적했다. 봇은 그때마다 일지에 한 줄씩 적는다. PL 이 "회고하자" 고 하자 봇이 "규칙 후보: 수율 표는 % 로" 를 근거 세 줄과 함께 낸다. PL 이 "앞으로 그렇게 해" 라고 하면 `projects/수율개선/house.md` 에 한 줄이 들어간다. `house.md` 는 이 과제만의 규칙 메모다.
-
-봇은 쓸수록 이 과제에 맞아 간다. 다만 **스스로 규칙을 만들지 않는다.** 입구는 둘이고 문은 하나다. 문은 **사람이 "앞으로" 라고 말하는 것**이다 (ADR-035).
-- **지시형:** 사람이 먼저 "앞으로 회의록은 이 양식으로" 라고 말한다.
-- **관찰형:** 봇은 반복을 **세지 않는다**(세는 장치도 상태 파일도 없다). 일지의 `## 되풀이된 말` 칸에 한 줄씩 쌓아 두고, 사람이 부른 `retro` 가 읽다가 알아채 제안한다 (`prodev/.claude/skills/journal/SKILL.md:37-47`).
-
-이 그림은 일지 · 찾기 기록 · 검토 판정이 회고의 제안이 되고, 사람이 무엇을 굳히라 했느냐에 따라 갈라지는 길을 보여 준다.
-
-```mermaid
-flowchart TB
-    J["journal/*.md<br/>되풀이된 말 · 다음 할 일"] --> R
-    FL["봇 폴더 find.log<br/>건수 0 인 줄"] --> R
-    RV["cards · 산출물.review.md<br/>불통과 판정"] --> R
-    R["retro 스킬<br/>사람이 회고하자고 부름 · 기본 최근 2주"]
-    R --> O["제안 넷 · 항목마다 근거<br/>되풀이 · 막힘 · 굳힐 후보 · 스킬 후보"]
-    O --> D{"사람이 무엇을 굳히라 했나"}
-    D -->|"이번에는 · 이번 한 번만"| NO["굳지 않음"]
-    D -->|"앞으로 · 규칙"| H["house.md 상한 50줄"]
-    D -->|"앞으로 · 양식 · 방법"| T["templates/ · analysis/methods/"]
-    D -->|"스킬 · 도우미"| PR["prodev 제작 세션이 worktree + PR"]
-    H -->|"다음 켜기 session-start 여덟째 절"| NEXT["봇이 규칙을 싣고 일함"]
-    T -->|"쓸 때 report · analysis 스킬이 읽음"| USE["양식 · 방법대로 산출물"]
-```
-
-읽는 법:
-- 위의 세 재료가 사람이 부른 `retro` 로 모인다. 정해진 시각에 저절로 도는 장치(cron)는 없다.
-- 마름모에서 갈린다. 봇은 제안까지만 한다. 스킬 자체는 봇이 못 만들고, prodev 제작 세션이 PR 로 만든다.
-- 켤 때마다 싣는 것은 `house.md` 뿐이다. `templates/` · `analysis/methods/` 는 그 일을 할 때 스킬이 열어 읽는다 (ADR-032 · `session-start.js:136-139`).
-
-풀어 둘 것:
-- 제안마다 원본 경로 · 들어갈 문장 · 까닭을 단다. 근거 없는 항목은 쓰지 않는다 (`prodev/.claude/skills/retro/SKILL.md:67-85`).
-- 굳을 때 봇은 범위를 한 줄로 되묻고, 머리에 "언제부터 · 누가 · 무엇을 보고" 를 단다 (`prodev-orchestrator/SKILL.md:42-54`).
-- **`house.md` 쉰 줄 상한은 쓰기를 막지 않는다.** 켤 때 훅이 쉰 줄에서 자르고, 잘리면 "사람에게 말하고 스스로 줄이지 마라" 를 싣는다 (`prodev/common/hooks/session-start.js:136-143`).
-- `analysis/methods/` 는 setup 이 만들지 않고 봇이 처음 굳힐 때 만든다 (`setup.js:205-206` · `prodev/docs/as-built.md:182`). cron 이 없다는 근거는 `retro/SKILL.md:10` · `setup.js:12` · ADR-036.
-
-<details>
-<summary>근거 — 이 길을 정한 ADR-031~037</summary>
-
-| ADR | 한 줄 |
-|---|---|
-| 031 | 판을 v3 "진화하는 비서" 로 올린다. 관문 셋: 자리 → 길 → 짐 |
-| 032 | 굳은 것이 사는 자리를 과제 폴더에 둔다. `house.md` 상한 50줄은 훅이 여덟째 절로 싣는다 |
-| 033 | 허용 목록을 41건 → 22건으로 줄이고 Git Bash 경로를 봇 설정에 박는다 |
-| 034 | `analysis` 스킬 + `analysis/<날짜>-<slug>/` 여섯 칸 + 카드 필수. 사람 관문은 모형 고르기 하나 |
-| 035 | 굳는 길: 입구 둘(지시형 · 관찰형), 문 하나. "앞으로" 만 굳고 세지 않는다 |
-| 036 | `retro` 스킬 = 관찰형이 도는 시점. 근거 필수. cron 없음 |
-| 037 | 스킬을 만드는 기준은 판별 넷: 숫자는 스크립트 · 타이밍은 스킬 · 문맥 격리는 도우미 · 셋 다 아니면 안 만든다 |
-
-</details>
+- **굳은 규칙 `house.md` 는 과제 폴더에 있고, 세션이 뜰 때마다 다시 실린다.** cockpit 의 `켜기`, 서버를 다시 켤 때 앞 대화를 이어 붙이는 resume, 압축 뒤 — 이때마다 `session-start` 훅이 여덟째 절로 싣는다. 쉰 줄을 넘으면 자르고 "사람에게 말하라" 를 함께 싣는다 (`prodev/common/hooks/session-start.js:2` · `:132-143`).
+- **`templates/` · `analysis/methods/` 는 켤 때 싣지 않는다.** 그 일을 할 때 스킬이 열어 읽는다 (ADR-032).
+- **스킬 · 도우미 · 훅은 봇이 아니라 prodev 제작 세션이 PR 로 바꾼다** (ADR-036). 봇 허용 목록은 과제 폴더 · 봇 폴더 쓰기만 열고(`prodev/common/settings.local.template.json:12-15`), 훅 · 스크립트 고치기는 거부 목록에 있다(`:27-33`). 바뀐 판이 봇에게 닿으려면 그 기계의 prodev 폴더가 새 판을 받아야 한다 (8.2절).
+- **정해진 시각에 저절로 도는 회고는 없다.** 사람이 "회고하자" 고 불러야 돈다 (`setup.js:12` · ADR-036).
 
 ## 7. 봇의 세계
 
@@ -462,7 +352,7 @@ flowchart TB
 |---|---|---|
 | 방 하나 | 과제 하나 = 방 하나 `prodev-<과제>` = 봇 하나. 옛 판에는 파일만 올리는 files 방이 따로 있었는데 지금은 없다. 옛 files 방은 보관되고 봇은 읽기만 한다 | ADR-039 · cockpit ADR-015 |
 | 봉투 | 대문자 `@TO(이름)` · `@CC(이름)` 만 봉투다. 이름에 빈칸 · 괄호가 있으면 안 된다. `@TO` 는 답하라, `@CC` 는 참고만 하라 | `mention.js:5` · `wrap.js:21-22` |
-| 봉투 없는 글 | 편지함에 줄이 안 생기고 봇 턴이 없다. 사람끼리 말하는 자리다. 작성기가 `@TO(봇)` 을 미리 채워 둔다 | cockpit ADR-018 · `chat-db.js:179` |
+| 봉투 없는 글 | 편지함에 줄이 안 생기고 봇 턴이 없다. 사람끼리 말하는 자리다. 입력칸은 미리 채워지지 않고, 봉투가 없으면 안내 글자 "봇에게 가지 않습니다 — 부르려면 @" 가 보인다. `@` 를 치면 자동완성에 TO 한 줄만 뜨고, 고르면 `@TO(봇) ` 이 들어간다. `@CC(봇)` 은 자동완성에 없고, 손으로 치면 참고 글로 간다 | cockpit ADR-018 · `chat-db.js:179` · `web/glue.js:7` · `web/app.js:708` · `:772` |
 | `reply` | 봇이 방에 말하는 **유일한** 길. 제 방에만 쓴다 | `tools.js:18-42` · `:81-89` |
 | `fetch_history` | 지난 글 읽기. 결과에 첨부 경로가 실린다. 봇은 부른 글의 첨부만 바로 받고, 나머지는 이것으로 따라잡는다 | cockpit ADR-020 · `tools.js:60-68` |
 | 훅 `session-start` | 켤 때 · resume · clear · 압축 뒤마다 여덟 절을 싣는다: 인수인계서 → 헌장 → 일정 → 열린 실 → 어제 일지 → 색인 머리 → 마지막 일지 날짜 → `house.md` | `session-start.js:95-143` |
@@ -511,7 +401,7 @@ stateDiagram-v2
 
 ### 8.1 켜는 법 (짧게)
 
-처음 세우는 사람은 **`cockpit/README.md` 3절의 걸음 1~20** 을 위에서부터 따른다. 윈도우 회사 PC 는 `cockpit/docs/INSTALL-WINDOWS.md` 이다. 준비물은 Node 22.13 이상 · Git · Claude Code(설치 + 로그인)이고, 경로에 빈칸이 없어야 한다 (`cockpit/package.json:7-9`).
+처음 세우는 사람은 **`cockpit/README.md` 3절의 걸음 1~20** 을 위에서부터 따른다. 윈도우 회사 PC 는 `cockpit/docs/INSTALL-WINDOWS.md` 이다. 이 길은 prodev · cockpit 의 `main` 을 받는다(핀 커밋으로 받는 길은 8.2절 끝). 준비물 전체는 cockpit README 2.2절에 있고, 여기서는 셋만 짚는다. Node 는 22.13 이상이다(`cockpit/package.json:7-9`). 설정의 경로에 빈칸이 있으면 `check` 가 막는다(`cockpit/src/config.js:37`). 작업판은 홈 폴더 밖에 세운다(11절 3번).
 
 터미널에서 `cd cockpit` 한 뒤 친다.
 
@@ -538,9 +428,9 @@ git 은 파일 변경 기록장이고, 핀은 이 작업판이 가리키는 커�
 | 저장소 | git 자리 |
 |---|---|
 | `meta/` · 뿌리 파일 | 이 저장소가 직접 담는다 |
-| `prodev/` | 자기 저장소(bjw202/prodev). 핀 `7155e77` (검수는 아직 안 거친 판, `workspace.json:4`) |
+| `prodev/` | 자기 저장소(bjw202/prodev). 핀 `00feaa0` (README 검수는 사람이 받아들인 판, `workspace.json:4`) |
 | `minidiscord/` | 자기 저장소(bjw202/minidiscord). 핀 `6633f7b` |
-| `cockpit/` | 자기 저장소(bjw202/cockpit). 핀 `7aa80dd` (검수는 아직 안 거친 판, `workspace.json:6`) |
+| `cockpit/` | 자기 저장소(bjw202/cockpit). 핀 `ab77880` (화면 변경 코드는 검수 전 · README 는 사람이 받아들인 판, `workspace.json:6`) |
 | `crew/` | 자기 저장소(bjw202/crew). 핀 `eefac93` (검수는 아직 안 거친 판, `workspace.json:7`) |
 | `knowledge/` | 작은 로컬 저장소. **핀 없음 · 원격 없음** |
 | `projects/<과제>/` | 과제마다 자기 git. 이 저장소에 올리지 않는다 |
@@ -553,23 +443,38 @@ git 은 파일 변경 기록장이고, 핀은 이 작업판이 가리키는 커�
 | 핀 올리기 | meta 가 검수를 끝냈을 때 `workspace.json` 의 커밋을 올리고 `meta/` 기록과 함께 커밋한다 |
 | 올리지 않는 것 | `projects/` 안 과제 · `.env` · `*.db` · `node_modules` (`.gitignore`) |
 
+**받는 길은 둘이다.** ① 봇만 돌리려고 cockpit · prodev 를 새로 세울 때는 8.1 의 cockpit README 걸음 2 · 3 으로 `main` 을 clone 한다. 회사 PC 가 이 길이다. ② 이 작업판 전체(meta · minidiscord · crew 포함)를 핀 커밋 그대로 되살릴 때, 곧 다른 기계에서 meta 일을 이을 때는 이 저장소(bjw202/crew-workspace)를 받고 `sh bootstrap.sh` 를 돌린다. 이 그림은 두 길이 받은 뒤 어디에 서고, 업데이트 때 어디서 만나는지 보여 준다.
+
+```mermaid
+flowchart TB
+    Q{"무엇을 세우나"} -->|"① 봇만 돌린다"| A1["cockpit README 걸음 2 · 3<br/>git clone prodev · cockpit"]
+    Q -->|"② 작업판 전체를 핀대로"| B1["git clone crew-workspace<br/>sh bootstrap.sh"]
+    A1 --> A2["main 가지 위"]
+    B1 --> B2["핀 커밋 · 가지에서 떨어진 HEAD"]
+    B2 -->|"git -C 폴더 checkout main"| A2
+    A2 -->|"git pull --ff-only"| NEW["origin/main 최신"]
+    B2 -.->|"그대로 pull"| STOP["멈춤 · You are not currently on a branch"]
+```
+
+읽는 법:
+- ① 은 처음부터 `main` 가지 위라 cockpit README 10절(새 판 받기)의 `git pull --ff-only` 가 바로 된다.
+- ② 는 `bootstrap.sh` 가 핀 커밋으로 `checkout` 해서(`bootstrap.sh:21`) HEAD 가 어느 가지에도 서 있지 않다. 업데이트 전에 `git -C <폴더> checkout main` 을 한 번 친다(출력의 안내 `bootstrap.sh:22`). 점선은 이 걸음을 빼먹었을 때다.
+- 업데이트로 받은 최신 판은 핀보다 앞선다. `sh bootstrap.sh` 를 다시 돌리면 핀 커밋으로 되돌아간다.
+
 ### 8.3 잘 안 될 때
 
-**대부분의 고장은 오류를 내지 않는다.** 왼쪽은 밖에서 보이는 모습, 오른쪽이 자리다. 더 많은 줄은 `cockpit/README.md` 7절.
+**조종석 화면 · 로그인 · 봇 켜기 · 승인 카드 · 방 만들기 오류는 [cockpit README](cockpit/README.md) 7절 "막혔을 때" 에 있다.** 여기에는 작업판 전체(핀 · bootstrap · 저장소 자리 · 권한 파일)에 걸린 줄만 둔다. 대부분의 고장은 오류를 내지 않는다.
 
 | 보이는 것 | 자리 · 할 일 |
 |---|---|
-| `이름이나 비밀번호가 맞지 않습니다` | 계정이 없거나 비밀번호가 틀렸다. 가입 단추는 없으니 `init-admin` · `add-user` 로 만든다 |
-| 새 판을 받았는데 옛 화면 | 서버를 다시 띄웠는지 보고, 보통 새로고침(F5)을 한 번 한다 (`cockpit/README.md` 7.4) |
+| `sh bootstrap.sh` 가 PowerShell · CMD 에서 안 돈다 | Git Bash 나 WSL 에서 친다 (`bootstrap.sh:4`) |
+| 받은 폴더에서 `git pull` 이 `You are not currently on a branch` 로 멈춤 | `bootstrap.sh` 가 핀 커밋으로 맞춰 가지에서 떨어졌다. `git -C <폴더> checkout main` 뒤 당긴다 (8.2절) |
+| 새 기계에 `knowledge/` 가 없음 | 핀도 원격도 없어 `bootstrap.sh` 가 안 받는다. 폴더를 따로 옮긴다 (11절 8번) |
 | 봇이 말은 하는데 파일을 못 쓰고, 첫 줄에 `…not been trusted` | 그 봇 폴더를 신뢰하지 않아 **허용 목록이 통째로 무시됐다.** 새 방마다 그 봇 폴더에서 `claude` 를 한 번 켠다 (8.1 차례 3) |
 | 허용 규칙을 넣었는데 승인 카드가 또 옴 | `settings.json` 에 넣었다. `settings.local.json` 에만 먹는다. setup 을 다시 돌리면 이 파일은 덮인다 (ADR-038) |
-| 방 만들기가 빨간 `setup 실패: …` (502) | `prodevDir` 가 prodev 가 아니거나 · `settings.local.json` 이 안 생겼거나(판이 안 맞음) · 육십 초를 넘겼다 (`create.js:90-94`). `setup_tail` 끝에 옛 안내 "다음 — open-project …" 가 섞일 수 있다 (11절 8번) |
-| `과제가 이미 있습니다` · `봇 폴더가 이미 있습니다` (409) | 같은 이름이 있거나, 앞의 실패에서 못 지운 봇 폴더다. 못 지운 자리는 응답의 `left` 칸에 적힌다 |
-| 글을 보냈는데 봇 턴이 안 생김 | ① 봉투가 없다(소문자 `@to` 도 없음과 같다) ② 봇이 꺼져 있다 — 글은 편지함에 쌓였다가 켜지면 배달된다 ③ admin 이 건 압축 중이다 |
-| 방에 `⛔ 시간 초과 거부 (10분) · <도구>` | 승인 카드에 admin 이 십 분 안에 답하지 않았다. member 화면에는 단추가 없다. 봇에게 다시 시킨다 (문구 `relay.js:39` · 타이머 `:74`) |
-| `동시 세션 상한 3 에 닿았다` | 다른 과제의 봇을 끄거나, `cockpit.json` 의 `maxSessions`(동시에 켤 봇 수)를 올린다 |
-| 조종석 판에 `오류: …` | Claude Code 가 못 떴다. 로그인이 없거나 실행 파일을 못 찾았을 수 있다. 윈도우는 `cockpit.json` 의 `claudePath`(Claude Code 실행 파일 자리)를 본다 (`cockpit/README.md:425`) |
-| `켜는 중` 이 1분 넘게 안 바뀜 | Claude Code 가 로그인 · 네트워크를 기다리고 있을 수 있다. `끄기` → `켜기` 를 한 번 한다 (`cockpit/README.md:426`) |
+| 봇이 스킬 · 지침을 모르는 듯함 | 봇 폴더가 `prodev/bots/` 아래가 아닐 수 있다. CLI 는 봇 폴더에서 위로 올라가며 읽는다 (4절 · 11절 1번). `check` 는 `botsDir` 가 `<prodevDir>/bots` 가 아니면 막는다 (`cockpit/src/config.js:46-51`) |
+| 봇이 모르는 개인 지침을 따르는 듯함 | 작업판을 홈 폴더 아래에 세웠을 수 있다 (11절 3번) |
+| 방 만들기 실패 응답 끝에 "다음 — open-project …" | `setup.js` 의 옛 안내다. 따르지 않는다 (11절 7번). 실패 까닭은 cockpit README 7.2절 |
 | 봇 첫 답이 "규칙 파일이 50줄을 넘어…" | `house.md` 가 넘쳤다. 무엇을 뺄지 사람이 고른다 (6절) |
 
 <details>
@@ -632,25 +537,21 @@ git 은 파일 변경 기록장이고, 핀은 이 작업판이 가리키는 커�
 
 ## 11. 확인하지 못한 것 · 문서끼리 어긋난 것
 
-"고치라" 가 아니라 사실만 적는다. 항목마다 "그래서" 줄은 쓰는 사람에게 생길 수 있는 일이다.
+"고치라" 가 아니라 사실만 적는다. 항목마다 "그래서" 줄은 쓰는 사람에게 생길 수 있는 일이다. 2026-09-15 에 prodev `7155e77` · cockpit `7aa80dd` 코드와 다시 대조했다.
 
-1. **스킬 링크는 없다.** v2 계획 문서 둘이 "스킬 링크" 를 만든다고 적었지만(`meta/prodev-review/plans/2026-09-14-cockpit-후속/AS-IS-TO-BE-v2.md:23` · `DIRECTION-v2.md:52`), `setup.js:309-356` 은 링크하지 않는다. 링크를 만든 것은 v1 스모크 시험용 사본뿐이다(`cockpit/smoke/scratch.mjs:92-96`).
-   그래서: 봇 폴더를 `prodev/bots/` 밖으로 옮기면 스킬이 안 실릴 수 있다.
-2. **CLAUDE.md · 스킬이 실렸다는 기록.** `cockpit/docs/ARCHITECTURE_EXPLANATION.md` 10 · 14절은 "실린 기록이 없다" 고 적었다. 4절의 확인은 그 뒤 시험 설치본의 세션 기록에서 본 것이다.
-   그래서: 두 문서를 나란히 읽으면 서로 다른 말로 보인다. 4절이 더 나중의 확인이다.
-3. **홈 폴더(내 계정의 맨 위 폴더, 맥은 `/Users/<이름>`) 아래에 설치하면 개인 지침이 섞인다.** 확인한 것: 시험 설치본(`~/cockpit-try-v2`) 봇 세션 기록 14번째 줄에 `~/.claude/CLAUDE.md` 가 시작 지시문 첨부로, "project instructions" 표시를 달고 실렸다. 추정한 것: 까닭은 위로 올라가는 탐색이 홈 폴더까지 닿았기 때문으로 보인다. `settingSources` 에 사람 개인 설정(`'user'`)은 없다.
-   그래서: 설치한 사람의 개인 지침이 봇의 말투나 행동에 섞일 수 있다.
+1. **스킬 링크는 없다.** `setup.js` 는 봇 폴더에 스킬을 복사하지도 링크하지도 않는다(`prodev/scripts/setup.js:309-356`). 링크를 만든 것은 v1 스모크 시험용 사본뿐이다(`cockpit/smoke/scratch.mjs:92-96`). v2 계획 문서도 지금은 "링크가 아니라 CLI 가 prodev 뿌리에서 읽는다" 로 적는다(`meta/prodev-review/plans/2026-09-14-cockpit-후속/AS-IS-TO-BE-v2.md:23` · `DIRECTION-v2.md:52`).
+   그래서: 봇 폴더를 `prodev/bots/` 밖으로 옮기면 스킬 · 도우미 · CLAUDE.md 가 안 실릴 수 있다.
+2. **스킬이 실렸다는 말은 문서마다 다르다.** `cockpit/docs/ARCHITECTURE_EXPLANATION.md` 는 CLAUDE.md 가 실린 것을 세션 기록으로 확인했다고 적는다(`:461`). 스킬은 "기록 없음" 이다. 켤 때의 `init` 사건(세션을 켤 때 SDK 가 처음 보내는 준비 알림. 붙은 명령 · 도우미 목록이 들어 있고, cockpit 은 그중 명령 수와 도우미 이름만 `session_events` 에 적는다 — `cockpit/src/session/manager.js:237-244`)에 명령 수만 있고 이름이 없기 때문이다(`:463` · `:591`). 이 문서 4절은 시험 설치본의 세션 기록 파일(`.jsonl`)에서 스킬 열다섯 이름을 봤다.
+   그래서: 스킬에 대해서만 두 문서가 다른 말로 보인다. 근거로 삼은 기록이 다르다(cockpit 문서는 `init` 사건, 4절은 `.jsonl`).
+3. **홈 폴더(내 계정의 맨 위 폴더, 맥은 `/Users/<이름>`) 아래에 설치하면 개인 지침이 섞인다. 확인했다.** 같은 시험(`m1-hello`)을 두 자리에서 돌렸다. 홈 밖에서는 봇 폴더 · prodev 뿌리의 CLAUDE.md 만 실렸고, 홈 아래에서는 `~/.claude/CLAUDE.md` 가 "project instructions" 표시로 하나 더 실렸다(`cockpit/docs/log.md` "N18 실증" 절 · `ARCHITECTURE_EXPLANATION.md:462`). 위로 올라가는 탐색이 홈 폴더에 닿기 때문이라, `settingSources` 에 개인 설정(`'user'`)이 없어도 생긴다. 맥에서만 쟀고 윈도우 홈(`C:\Users\<이름>`) 아래는 재지 않았다.
+   그래서: 작업판은 홈 밖에 세운다. cockpit README 걸음 1 의 맥 예 `~/work/…` 는 홈 아래다(`7aa80dd` 기준, 예를 바꿀지는 `cockpit/docs/log.md` Q11 로 열려 있다).
 4. **열린 실(threads) 자리가 엇갈린다.** intake 는 봇 폴더 `threads/` 에 쓰고, brief · close 도 거기서 읽는다(`intake/SKILL.md:73` · `brief/SKILL.md:26` · `close/SKILL.md:24`). 켤 때 훅은 과제 폴더 `threads/` 에서 읽는다(`session-start.js:105`).
    그래서: 켤 때 싣는 "열린 실" 절에서 빠진다. brief · close 에는 보인다.
-5. **`node scripts/index.js next E` 는 코드상 없는 명령으로 보인다.** 스킬 넷의 여섯 곳(`intake/SKILL.md:66,92` · `analysis:105` · `research:66` · `schedule:41,62`, `next E` · `next R` · `next D`)이 쓰지만 `index.js` 는 첫 인자를 과제 폴더로 읽는다(`index.js:26-28`). 다음 번호는 인자 없이 돌린 출력의 `next E:` 줄에 나온다(`:249`). 실행해 보지는 않았다.
-   그래서: 5.1절 ① 번호 받기에서 봇이 한 번 헤맬 수 있다.
-6. **cron.** `brief` · `journal` · `prodev-orchestrator` 스킬은 cron 08:00 · 18:30 을 말한다. `retro` 스킬 · `setup.js:12` · ADR-036 은 cron 이 없다고 한다. `prodev/docs/launch.md:361-376` 의 `setup.js cron` 명령은 없다.
+5. **cron.** `brief` · `journal` · `prodev-orchestrator` 스킬은 cron 08:00 · 18:30 을 말한다(`brief/SKILL.md:10` · `journal/SKILL.md:10` · `prodev-orchestrator/SKILL.md:21-23`). `retro` 스킬 · `setup.js:12` · ADR-036 은 cron 이 없다고 한다. `prodev/docs/launch.md` 10.7절(`:361`)에 `setup.js cron` 걸음이 남아 있지만, 같은 문서가 10절을 옛 판 기록이라 밝히고 `cron` 명령은 지웠다고 적는다(`launch.md:9` · `:91`).
    그래서: 아침 브리핑 · 저녁 일지는 저절로 오지 않는다. 사람이 불러야 한다.
-7. **find.log 자리.** `AS-IS-TO-BE-v2.md:27` 은 과제 폴더라 적었지만 실제는 봇 폴더다(`find.js:275`).
+6. **find.log 는 봇 폴더에 있다**(`find.js:275`). 과제 폴더에 두는 다른 기록(`house.md` · `journal/`)과 자리가 다르다. 계획 문서도 지금은 봇 폴더로 적는다(`AS-IS-TO-BE-v2.md:27`).
    그래서: 과제 폴더에서 `find.log` 를 찾으면 없다.
-8. **옛 판 문구가 남은 자리.** 스킬 넷(`intake` · `paper` · `report` · `patent`)의 "`files` 방" · `prodev/docs/as-built.md`(2026-09-11 판) · `prodev/docs/launch.md` 0절 · `prodev/README.md:966` 의 `open-project` 안내 · `setup.js:352-354` 끝 안내 · `bootstrap.sh` 끝 줄 "README '봇을 돌리는 법'" · `WINDOWS.md:168` 채널 플러그인 빌드.
-   그래서: 이 안내를 따라 하면 지금 판에 없는 명령이나 방을 찾게 된다. 방 만들기 실패 응답에도 옛 안내가 섞일 수 있다.
-9. **cockpit · knowledge 는 핀도 원격도 없다** (8.2절).
-   그래서: 새 기계에서 `bootstrap.sh` 만으로는 cockpit 을 못 받는다. 폴더를 따로 복사해 와야 한다.
-10. **실제 `prodev/bots/` 와 `projects/` 는 옛 판 산출물이다.** `.env` · `.mcp.json` 이 있고 `settings.local.json` 이 없다. v2 모습의 실물은 `~/cockpit-try-v2` 에만 있다.
-    그래서: 이 작업 폴더의 봇 폴더를 v2 의 본보기로 삼으면 틀린다.
+7. **옛 판 문구가 남은 자리.** 스킬 넷의 "`files` 방"(`intake` · `paper` · `report` · `patent` 의 `SKILL.md:10`) · `prodev/docs/as-built.md`(마지막 갱신 2026-09-11, `:4`) · `setup.js:352-353` 끝 안내 "다음 — 조종석에서 과제를 연다 … open-project"(웹의 `+` 는 이 걸음까지 한다, 3.1절) · `WINDOWS.md:168` 채널 플러그인 빌드.
+   그래서: 이 안내를 따라 하면 지금 판에 없는 방이나 걸음을 찾게 된다. 방 만들기 실패 응답에도 옛 안내가 섞일 수 있다.
+8. **knowledge 만 핀도 원격도 없다** (8.2절). cockpit 은 핀 `ab77880` 과 공개 원격 bjw202/cockpit 이 있어 `bootstrap.sh` 가 받는다(`workspace.json:6`).
+   그래서: 새 기계에서 knowledge 는 `bootstrap.sh` 로 못 받는다. 폴더를 따로 옮겨 와야 한다.
